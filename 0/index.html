@@ -1,78 +1,114 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
-            background-color: #f5f5f5;
         }
-        .container {
-            display: flex;
-            justify-content: space-around;
-            align-items: flex-start;
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .image-container {
-            flex: 1;
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .image-container h3 {
-            color: #333;
-            margin: 15px 0 10px 0;
-        }
-        .answer {
-            margin-top: 30px;
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
+        
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 30px;
         }
-        h2 {
-            color: #444;
-            border-bottom: 2px solid #007acc;
-            padding-bottom: 10px;
+        
+        .image-comparison {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        
+        .image-container {
+            text-align: center;
+            flex: 0 1 300px;
+        }
+        
+        .image-container img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+        }
+        
+        .image-container h3 {
+            margin: 10px 0 5px 0;
+        }
+        
+        .image-container p {
+            margin: 0;
+        }
+        
+        .explanation {
+            margin-top: 30px;
+        }
+        
+        .explanation h2 {
+            margin-bottom: 15px;
+        }
+        
+        .explanation p {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
-    <h1>Project 0</h1>
-    <div class="container">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <a href="../index.html" style="color: #3498db; text-decoration: none; font-size: 0.9em;">Back to Home</a>
+    </div>
+    <h1>Project 0: Becoming Friends with Your Camera</h1>
+
+    <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
+    <div class="image-comparison">
         <div class="image-container">
-            <h3>The Wrong Way</h3>
+            <h3>Close-up Shot</h3>
             <img src="media/closeup.jpg" alt="Selfie: The Wrong Way - Close Up">
-            <p><em>Close-up shot with distortion</em></p>
+            <p>Close-up selfie image</p>
         </div>
         <div class="image-container">
-            <h3>The Right Way</h3>
+            <h3>Zoom Shot</h3>
             <img src="media/far_zoom.jpg" alt="Selfie: The Right Way - Stepped Back and Zoomed">
-            <p><em>Stepped back and zoomed in</em></p>
+            <p>Further zoomed image</p>
         </div>
     </div>
-    <div class="answer">
-        <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
+    
+    <div class="explanation">
         <p>
-            The close-up picture results in distortion because the camera is too close to the subject, exaggerating facial features due to perspective distortion. Stepping back and zooming in helps maintain a natural proportion and minimizes distortion, leading to a more accurate and aesthetically pleasing portrait.
+            It seems that with a close-up selfie shot, the face is slightly distorted due to the short distance between our face and the camera lens. Our cameras
+            may pick up more on the features that are closer to the lens itself (like the nose) and stretch features that are further away. However, when we step back
+            and then zoom in with the camera lens, the distance no longer picks up on super close features and may achieve a generally more flat appearance, and 
+            maintain these facial proportions even when we zoom in closer from further away.
         </p>
+    </div>
+
+    <h2>Part 2: Architectural Perspective Compression</h2>
+    <div class="image-comparison">
+        <div class="image-container">
+            <h3>Zoom Shot</h3>
+            <img src="media/closeup.jpg" alt="Selfie: The Wrong Way - Close Up">
+            <p>Zoomed in from further away</p>
+        </div>
+        <div class="image-container">
+            <h3>No Zoom Shot</h3>
+            <img src="media/far_zoom.jpg" alt="Selfie: The Right Way - Stepped Back and Zoomed">
+            <p>No zoom from a closer distance</p>
+        </div>
+    </div>
+    
+    <div class="explanation">
         <p>
-            <strong>Why this happens:</strong> When you take a photo from very close up, the lens creates a "wide-angle" effect that distorts the proportions of facial features. The nose appears larger, the face looks wider, and features closer to the camera appear exaggerated. By stepping back several feet and using optical zoom, you maintain the same subject size while using a more natural perspective that preserves facial proportions.
+            Similarly to the selfie portrait example, zooming in on an urban environment from further away
+            may allow the camera lens to pick up less on closer and further details of buildings and other objects
+            in the setting, creating a more flattened and compressed appearance. However, the closer we move to
+            objects in the environment, the more distorted the scene may appear. 
         </p>
+    </div>
+
+    <h2>Part 3: The Dolly Zoom</h2>
+    <div class="image-comparison">
+        <div class="image-container">
+            <h3>Dolly Shot</h3>
+            <img src="media/strawberry_gif.gif" alt="Dolly zoom shot of stuffed animal">
+            <p>My boba panda stuffed animal</p>
     </div>
 </body>
 </html>
