@@ -1,14 +1,78 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project 0: Becoming Friends with Your Camera</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            background-color: white;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 48px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: #7c3aed;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 32px;
+            transition: color 0.2s ease;
+        }
+        
+        .back-link:hover {
+            color: #6d28d9;
+        }
+        
+        .back-link::before {
+            content: "←";
+            margin-right: 8px;
+            font-weight: bold;
         }
         
         h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #111827;
             text-align: center;
+            margin-bottom: 48px;
+            letter-spacing: -0.025em;
+        }
+        
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 48px 0 24px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 16px 0 8px 0;
         }
         
         .image-comparison {
@@ -16,101 +80,143 @@
             justify-content: center;
             align-items: flex-start;
             gap: 40px;
-            margin: 20px 0;
+            margin: 32px 0;
+            flex-wrap: wrap;
         }
         
         .image-container {
             text-align: center;
             flex: 0 1 300px;
+            background-color: #f9fafb;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        
+        .image-container:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
         
         .image-container img {
             width: 100%;
             max-width: 300px;
             height: auto;
-        }
-        
-        .image-container h3 {
-            margin: 10px 0 5px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .image-container p {
-            margin: 0;
+            margin: 12px 0 0 0;
+            color: #6b7280;
+            font-size: 0.875rem;
         }
         
         .explanation {
-            margin-top: 30px;
-        }
-        
-        .explanation h2 {
-            margin-bottom: 15px;
+            margin-top: 32px;
+            background-color: #f9fafb;
+            padding: 24px;
+            border-radius: 12px;
+            border-left: 4px solid #7c3aed;
         }
         
         .explanation p {
-            margin-bottom: 10px;
+            margin-bottom: 16px;
+            color: #374151;
+            line-height: 1.7;
+        }
+        
+        .explanation p:last-child {
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .image-comparison {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .image-container {
+                flex: 1;
+                max-width: 100%;
+            }
+            
+            .container {
+                padding: 24px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div style="text-align: center; margin-bottom: 20px;">
-        <a href="../index.html" style="color: #3498db; text-decoration: none; font-size: 0.9em;">Back to Home</a>
-    </div>
-    <h1>Project 0: Becoming Friends with Your Camera</h1>
+    <div class="container">
+        <a href="../index.html" class="back-link">Back to Home</a>
+        <h1>Project 0: Becoming Friends with Your Camera</h1>
 
-    <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
-    <div class="image-comparison">
-        <div class="image-container">
-            <h3>Close-up Shot</h3>
-            <img src="media/closeup.jpg" alt="Selfie: The Wrong Way - Close Up">
-            <p>Close-up selfie image</p>
+        <h2>Part 1: Selfie: The Wrong Way vs. The Right Way</h2>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h3>Close-up Shot</h3>
+                <img src="media/closeup.jpg" alt="Selfie: The Wrong Way - Close Up">
+                <p>Close-up selfie image</p>
+            </div>
+            <div class="image-container">
+                <h3>Zoom Shot</h3>
+                <img src="media/far_zoom.jpg" alt="Selfie: The Right Way - Stepped Back and Zoomed">
+                <p>Further zoomed image</p>
+            </div>
         </div>
-        <div class="image-container">
-            <h3>Zoom Shot</h3>
-            <img src="media/far_zoom.jpg" alt="Selfie: The Right Way - Stepped Back and Zoomed">
-            <p>Further zoomed image</p>
+        
+        <div class="explanation">
+            <p>
+                It seems that with a close-up selfie shot, the face is slightly distorted due to the short distance between our face and the camera lens. Our cameras
+                may pick up more on the features that are closer to the lens itself (like the nose) and stretch features that are further away. However, when we step back
+                and then zoom in with the camera lens, the distance no longer picks up on super close features and may achieve a generally more flat appearance, and 
+                maintain these facial proportions even when we zoom in closer from further away.
+            </p>
         </div>
-    </div>
-    
-    <div class="explanation">
-        <p>
-            It seems that with a close-up selfie shot, the face is slightly distorted due to the short distance between our face and the camera lens. Our cameras
-            may pick up more on the features that are closer to the lens itself (like the nose) and stretch features that are further away. However, when we step back
-            and then zoom in with the camera lens, the distance no longer picks up on super close features and may achieve a generally more flat appearance, and 
-            maintain these facial proportions even when we zoom in closer from further away.
-        </p>
-    </div>
 
-    <h2>Part 2: Architectural Perspective Compression</h2>
-    <div class="image-comparison">
-        <div class="image-container">
-            <h3>Zoom Shot</h3>
-            <img src="media/pt2_zoom.jpg" alt="Part 2 zoomed exploratorium shot">
-            <p>Zoomed in from further away</p>
+        <h2>Part 2: Architectural Perspective Compression</h2>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h3>Zoom Shot</h3>
+                <img src="media/pt2_zoom.jpg" alt="Part 2 zoomed exploratorium shot">
+                <p>Zoomed in from further away</p>
+            </div>
+            <div class="image-container">
+                <h3>No Zoom Shot</h3>
+                <img src="media/pt2_notzoom.jpg" alt="Part 2 not zoomed exploratorium shot">
+                <p>No zoom from a closer distance</p>
+            </div>
         </div>
-        <div class="image-container">
-            <h3>No Zoom Shot</h3>
-            <img src="media/pt2_notzoom.jpg" alt="Part 2 not zoomed exploratorium shot">
-            <p>No zoom from a closer distance</p>
+        
+        <div class="explanation">
+            <p>
+                Here, I took pictures right outside of the Exploratorium in SF! Similarly to the selfie portrait example, zooming in on an urban environment from further away
+                may allow the camera lens to pick up less on closer and further details of buildings and other objects
+                in the setting, creating a more flattened and compressed appearance. This may help explain why
+                the image to the left looks flatter especially if we look at the shadow and shape of the monument. The closer we move to
+                objects in the environment, the more distorted the scene may appear. In the image to the right, 
+                the shadow of the monument is far more extended and less compressed. 
+            </p>
         </div>
-    </div>
-    
-    <div class="explanation">
-        <p>
-            Here, I took pictures right outside of the Exploratorium in SF! Similarly to the selfie portrait example, zooming in on an urban environment from further away
-            may allow the camera lens to pick up less on closer and further details of buildings and other objects
-            in the setting, creating a more flattened and compressed appearance. This may help explain why
-            the image to the left looks flatter especially if we look at the shadow and shape of the monument. The closer we move to
-            objects in the environment, the more distorted the scene may appear. In the image to the right, 
-            the shadow of the monument is far more extended and less compressed. 
-        </p>
-    </div>
 
-    <h2>Part 3: The Dolly Zoom</h2>
-    <div class="image-comparison">
-        <div class="image-container">
-            <h3>Dolly Shot</h3>
-            <img src="media/strawberry_gif.gif" alt="Dolly zoom shot of stuffed animal">
-            <p>My boba panda stuffed animal</p>
+        <h2>Part 3: The Dolly Zoom</h2>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h3>Dolly Shot</h3>
+                <img src="media/strawberry_gif.gif" alt="Dolly zoom shot of stuffed animal">
+                <p>My boba panda stuffed animal</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
