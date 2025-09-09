@@ -153,7 +153,63 @@
         <a href="../index.html" class="back-link">Back to Home</a>
         <h1>Project 1: Colorizing the Prokudin-Gorskii Photo Collection</h1>
 
-        <h2>Gallery</h2>
+        <h2>Approach</h2>
+        <div class="explanation">
+            <p>
+                First, I followed the structure of our skeleton code to read in an image, convert
+                to double, compute height, and then separate an image into the BGR color channels. 
+                From there, I initially tried to implement the iterative approach for aligning the
+                color plates, so I defined a function to loop over every possible shift within a
+                range of -15 to 15 pixels in both x and y directions. For each shift, I then calculated
+                L2 norm between the reference channel (blue) and the shifted channel (green or red)
+                as my scoring metric and kept track of the lowest L2 norm score, and the corresponding
+                shift with the best score while iterating. However, this wasn't very efficient especially
+                for the larger .tif images, and it also resulted in somewhat blurry photo outputs which 
+                I saw some questions about on Ed that could also mean poor alignment, so I decided to 
+                implement the image pyramid approach instead.
+            </p>
+            <p>
+                For this approach, I tried scaling down the input image by half over the course of 3 levels,
+                excluding one level for the original image. Next, starting from the smallest image, I drew
+                on the iterative approach to find the best shift for the green and red channels relative
+                to the blue channel. However, instead of searching over the full range of -15 to 15 pixels,
+                I only searched within a smaller range of -2 to 2 pixels, since the images were smaller. After finding
+                the best shift for each channel at the smallest level, I then scaled up the shifts by a factor of 2
+                to use as an initial guess for the next level. This process was repeated until reaching 
+                the original image size, where I again searched over a range of -15 to 15 pixels to find the final best shifts
+                (using L2 norm as the evaluation metric). Additionally, I know in the project spec a suggestion
+                to crop images to improve alignment was also mentioned, so in my algorithm I cropped around 10% of
+                the borders of each image, although I think there may be a better way to do this based on
+                image calculating image overlap? Definitely a future point of interest! Regardless, the best
+                L2 norm scores and best shifts were updated similarly to the iterative strategy, which is
+                how I ultimately aligned the images and displayed the final colorized image.
+            </p>
+            <p>
+                Feel free to look through the photos I aligned below!
+            </p>
+        </div>
+
+        <h2>Overview</h2>
+        <div class="explanation">
+            <p>
+                Overall, this was a super insightful project! At first, I didn't really understand
+                conceptually how we could colorize images based on these filtered color plates nor could
+                I fathom how Prokudin-Gorskii was able to show the photos in color using different spotlights
+                (I was amazed to read about his technique on the LOC website), but after getting 
+                hands-on experience with implementing an algorithmic version of his technique, I 
+                feel that I learned a lot not only just about image pyramid strategies but also 
+                about photography in general! 
+            </p>
+            <p>
+                I also really loved the variety of the photos! Personally, I love portrait photography, 
+                so I was drawn to Prokudin-Gorskii's photos of people! When browsing the LOC collection, 
+                I filtered for "Group Portraits", and I was surprised by how many photos of ordinary people there were, 
+                although I suppose this could also make sense intuitively because of his methodology and travels. 
+                Super valuable to see a snapshot into the lives of all the different people back then, even for just a moment!
+            </p>
+        </div>
+
+        <h2>CS 180 Gallery</h2>
         <div class="image-comparison">
             <div class="image-container">
                 <h3>Cathedral</h3>
@@ -227,10 +283,23 @@
             </div>
         </div>
 
-        <div class="explanation">
-            <p>
-                process + notes here
-            </p>
+        <h2>Additional Collection Photos</h2>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h3>Peasant Girls</h3>
+                <img src="output/aligned_peasant_girls.jpg" alt="Aligned Peasant Girls">
+                <p>aligned_peasant_girls.jpg</p>
+            </div>
+            <div class="image-container">
+                <h3>Students</h3>
+                <img src="output/aligned_students.jpg" alt="Aligned Students">
+                <p>aligned_students.jpg</p>
+            </div>
+            <div class="image-container">
+                <h3>Tipy Dagestana (Group Photo)</h3>
+                <img src="output/aligned_tipy_dagestana.jpg" alt="Aligned Tipy Dagestana">
+                <p>aligned_tipy_dagestana.jpg</p>
+            </div>
         </div>
     </div>
 </body>

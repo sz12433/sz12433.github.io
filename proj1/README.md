@@ -13,6 +13,5 @@ Some notes on proj1 folder files:
 notes for website: 
 - originally ran into some problems with blurry photos, checked the ed, saw that it could be an alignment issue, started revamping my naive
   iterative approach to be the pyramid alignment 
-- initially downloaded photo from LOC website that wasn't high enough resolution (30.9KB), ended up rerunning on new download
 - i rly like the variety of the photos. personally, i love portrait photography, so i was drawn to Prokudin-Gorskii's photos of people! When browsing the LOC collection, I filtered for "Group Portraits", and I was amazed by how many photos of ordinary people there were, although I suppose this could also make
 sense intuitively because of his methodology and travels. Super valuable to see a snapshot into the lives of all the different people back then, even for just a moment!
