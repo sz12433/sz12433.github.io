@@ -128,6 +128,56 @@
             margin-bottom: 0;
         }
         
+        .algorithm-comparison {
+            margin: 32px 0;
+            background-color: #f9fafb;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin: 24px 0;
+        }
+        
+        .comparison-item {
+            text-align: center;
+            background-color: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+        }
+        
+        .comparison-item h4 {
+            margin: 0 0 12px 0;
+            color: #374151;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .comparison-item img {
+            width: 100%;
+            max-width: 250px;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .comparison-item p {
+            margin: 8px 0 0 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         @media (max-width: 768px) {
             .image-comparison {
                 grid-template-columns: 1fr;
@@ -163,9 +213,58 @@
                 range of -15 to 15 pixels in both x and y directions. For each shift, I then calculated
                 L2 norm between the reference channel (blue) and the shifted channel (green or red)
                 as my scoring metric and kept track of the lowest L2 norm score, and the corresponding
-                shift with the best score while iterating. However, this wasn't very efficient especially
-                for the larger .tif images, and it also resulted in somewhat blurry photo outputs which 
-                I saw some questions about on Ed that could also mean poor alignment, so I decided to 
+                shift with the best score while iterating. Additionally, I know on Ed there were some suggestions
+                about cropping images to improve alignment that were also mentioned, so in my algorithm I cropped around 10% of
+                the borders of each image, although I think there may be a better way to do this based on calculating image overlap? Definitely a future point of interest!
+                I included a side-by-side comparison to highlight the effect of cropping the images below
+            </p>
+            
+            <div class="algorithm-comparison">
+                <h3>Single Scale Improvements</h3>
+                <p>Below you can see the difference between my single scale algorithm before + after introducing cropping</p>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>Cathedral - Single Scale</h4>
+                        <img src="output/single_scale_cathedral.jpg" alt="Single Scale Cathedral">
+                        <p>Initial attempt</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Cathedral - Single Scale Cropped</h4>
+                        <img src="output/cropped_single_scale_cathedral.jpg" alt="Pyramid Cathedral">
+                        <p>Using cropping</p>
+                    </div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>Monastery - Single Scale</h4>
+                        <img src="output/single_scale_monastery.jpg" alt="Single Scale Monastery">
+                        <p>Initial attempt</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Monastery - Single Scale Cropped</h4>
+                        <img src="output/cropped_single_scale_monastery.jpg" alt="Pyramid Monastery">
+                        <p>Using cropping</p>
+                    </div>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-item">
+                        <h4>Tobolsk - Single Scale</h4>
+                        <img src="output/single_scale_tobolsk.jpg" alt="Single Scale Tobolsk">
+                        <p>Initial attempt</p>
+                    </div>
+                    <div class="comparison-item">
+                        <h4>Tobolsk - Single Scale Cropped</h4>
+                        <img src="output/cropped_single_scale_tobolsk.jpg" alt="Pyramid Tobolsk">
+                        <p>Using cropping</p>
+                    </div>
+                </div>
+            </div>
+            <p>
+                All that being said, this iterative strategy isn't very efficient especially
+                for the larger .tif images, so I decided to 
                 implement the image pyramid approach instead.
             </p>
             <p>
@@ -177,10 +276,9 @@
                 the best shift for each channel at the smallest level, I then scaled up the shifts by a factor of 2
                 to use as an initial guess for the next level. This process was repeated until reaching 
                 the original image size, where I again searched over a range of -15 to 15 pixels to find the final best shifts
-                (using L2 norm as the evaluation metric). Additionally, I know in the project spec a suggestion
-                to crop images to improve alignment was also mentioned, so in my algorithm I cropped around 10% of
-                the borders of each image, although I think there may be a better way to do this based on
-                image calculating image overlap? Definitely a future point of interest! Regardless, the best
+                (using L2 norm as the evaluation metric). Interestingly, I also tried switching out my L2 metric to use NCC,
+                but I didn't really see much improvement, so I think I may need to change some additional parameters or
+                implementations as well. Regardless, the best
                 L2 norm scores and best shifts were updated similarly to the iterative strategy, which is
                 how I ultimately aligned the images and displayed the final colorized image.
             </p>
