@@ -82,6 +82,13 @@
             margin: 32px 0;
         }
         
+        .image-comparison-2x2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin: 32px 0;
+        }
+        
         .image-container {
             text-align: center;
             background-color: #f9fafb;
@@ -183,6 +190,10 @@
                 grid-template-columns: 1fr;
             }
             
+            .image-comparison-2x2 {
+                grid-template-columns: 1fr;
+            }
+            
             .container {
                 padding: 24px;
             }
@@ -218,15 +229,52 @@
             </p>
             <p>
                 This is a little confusing because most computer vision libraries may use cross-correlation
-                in their convolution functions.
-            </p>
-            <p>
-                However, for part 1.1, my convolution function implementations do flip the kernel 
+                in their convolution functions. However, for part 1.1, my convolution function implementations do flip the kernel 
                 horizontally + vertically by using the <code>np.flipud</code> (vertical flip) and <code>np.fliplr</code> (horizontal
                 flip) from the numpy library.
             </p>
-            
-       
+            <p>
+                Compared to the built-in <code>convolve2d</code> function from the scipy library, my implementation
+                seemed to produce very similar results. I tried to quantitatively compared differences
+                by creating a random 10 x 10 array of floats (from 0 to 1) as input and a 3x3 box filter
+                and then convolving this input array with the built-in function as well as my implementation with
+                2 for loops. Then, I calced the maximum difference between the two arrays, and it came out to be
+                in the order of 1e-16, which is very small. That being said, there was a major difference 
+                in runtime because my manual implementation took around 2.4 seconds whereas scipy's took 
+                around 0.025 seconds, meaning mine was around 95x slower. 
+            </p>
+            <p>
+                Next, I tried convolving a picture of myself (from in front of the World Trade Center in NYC!)
+                and with a 9x9 box filter. This resulted in a blurred image, likely because the filter of 
+                all 1's sums neighboring pixels and then averages them out, leading to a smoothing effect. 
+                With the finite difference operators, I also saw a dark to light gradient in the X direction
+                and a light to dark gradient in the Y direction, which makes sense because the finite difference
+                operators are designed to pick up changes in intensity in the X and Y directions, respectively.
+            </p>
+        </div>
+
+        <h3>Convolution Results</h3>
+        <div class="image-comparison-2x2">
+            <div class="image-container">
+                <h4>Original Image</h4>
+                <img src="code/pics/wtc.jpg" alt="Original WTC Image">
+                <p>Original photo at World Trade Center</p>
+            </div>
+            <div class="image-container">
+                <h4>Convolved Image</h4>
+                <img src="code/output/wtc.png" alt="Convolved WTC Image">
+                <p>After 9x9 box filter convolution</p>
+            </div>
+            <div class="image-container">
+                <h4>Gradient X</h4>
+                <img src="code/output/grad_x.png" alt="Gradient X">
+                <p>Finite difference operator in X direction</p>
+            </div>
+            <div class="image-container">
+                <h4>Gradient Y</h4>
+                <img src="code/output/grad_y.png" alt="Gradient Y">
+                <p>Finite difference operator in Y direction</p>
+            </div>
         </div>
     </div>
 </body>
