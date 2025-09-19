@@ -235,13 +235,15 @@
             </p>
             <p>
                 Compared to the built-in <code>convolve2d</code> function from the scipy library, my implementation
-                seemed to produce very similar results. I tried to quantitatively compared differences
-                by creating a random 10 x 10 array of floats (from 0 to 1) as input and a 3x3 box filter
-                and then convolving this input array with the built-in function as well as my implementation with
-                2 for loops. Then, I calced the maximum difference between the two arrays, and it came out to be
-                in the order of 1e-16, which is very small. That being said, there was a major difference 
+                seemed to produce very similar results. I tried using a 3x3 box filter on my input image
+                and then convolving with the built-in function as well as my implementation with
+                2 for loops. Qualitatively speaking, the 2 images look very similar and produce a blurred 
+                output image. That being said, there was a major difference 
                 in runtime because my manual implementation took around 2.4 seconds whereas scipy's took 
-                around 0.025 seconds, meaning mine was around 95x slower. 
+                around 0.025 seconds, meaning mine was around 95x slower, and also a slight diffrence in
+                boundary handling because my implementation padded all sides with 0, whereas scipy's
+                default behavior involves sliding the kernel over edges even partially, which can lead to
+                additional rows and columns.
             </p>
             <p>
                 Next, I tried convolving a picture of myself (from in front of the World Trade Center in NYC!)
@@ -250,10 +252,11 @@
                 With the finite difference operators, I also saw a dark to light gradient in the X direction
                 and a light to dark gradient in the Y direction, which makes sense because the finite difference
                 operators are designed to pick up changes in intensity in the X and Y directions, respectively.
+                To elaborate, my picture with the operator in the X direction shows some vertical edges in white, while
+                my picture with the operator in the Y direction shows some horizontal edges.
             </p>
         </div>
 
-        <h3>Convolution Results</h3>
         <div class="image-comparison-2x2">
             <div class="image-container">
                 <h4>Original Image</h4>
@@ -275,6 +278,22 @@
                 <img src="code/output/grad_y.png" alt="Gradient Y">
                 <p>Finite difference operator in Y direction</p>
             </div>
+            <div class="image-container">
+                <h4>Gradient X</h4>
+                <img src="code/output/plt_x.png" alt="Gradient X">
+                <p>Finite difference operator in X direction</p>
+            </div>
+            <div class="image-container">
+                <h4>Gradient Y</h4>
+                <img src="code/output/plt_y.png" alt="Gradient Y">
+                <p>Finite difference operator in Y direction</p>
+            </div>
+        </div>
+        <h3>1.2 Finite Difference Operator</h3>
+        <div class="explanation">
+            <p>
+                For part 1.2,
+            </p>
         </div>
     </div>
 </body>
