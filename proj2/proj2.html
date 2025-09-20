@@ -243,7 +243,8 @@
                 around 0.025 seconds, meaning mine was around 95x slower, and also a slight diffrence in
                 boundary handling because my implementation padded all sides with 0, whereas scipy's
                 default behavior involves sliding the kernel over edges even partially, which can lead to
-                additional rows and columns.
+                additional rows and columns based on my image shapes of manual convolution = (1210, 907)
+                and Scipy convolution = (1212, 909).
             </p>
             <p>
                 Next, I tried convolving a picture of myself (from in front of the World Trade Center in NYC!)
@@ -257,16 +258,36 @@
             </p>
         </div>
 
-        <div class="image-comparison-2x2">
+        <div class="image-comparison">
             <div class="image-container">
                 <h4>Original Image</h4>
                 <img src="code/pics/wtc.jpg" alt="Original WTC Image">
-                <p>Original photo at World Trade Center</p>
+                <p>At the World Trade Center</p>
             </div>
             <div class="image-container">
-                <h4>Convolved Image</h4>
-                <img src="code/output/wtc.png" alt="Convolved WTC Image">
-                <p>After 9x9 box filter convolution</p>
+                <h4>4 For Loops Convolution</h4>
+                <img src="code/output/manual4.png" alt="Convolved WTC Image (4 for loops)">
+                <p>3x3 box filter + 4 for loops convolution</p>
+            </div>
+            <div class="image-container">
+                <h4>2 For Loops Convolution</h4>
+                <img src="code/output/manual.png" alt="Convolved WTC Image (2 for loops)">
+                <p>3x3 box filter + 2 for loops convolution</p>
+            </div>
+            <div class="image-container">
+                <h4>Scipy Convolution</h4>
+                <img src="code/output/scipy.png" alt="Convolved WTC Image Scipy">
+                <p>3x3 box filter + Scipy convolution</p>
+            </div>
+            <div class="image-container">
+                <h4>2 For Loops Convolution</h4>
+                <img src="code/output/wtc.png" alt="Convolved WTC Image (2 for loops, 9x9 filter)">
+                <p>9x9 box filter + 2 for loops convolution</p>
+            </div>
+            <div class="image-container">
+                <h4>Scipy Convolution</h4>
+                <img src="code/output/wtc_scipy.png" alt="Convolved WTC Image Scipy, 9x9 filter">
+                <p>9x9 box filter + Scipy convolution</p>
             </div>
             <div class="image-container">
                 <h4>Gradient X</h4>
@@ -292,8 +313,87 @@
         <h3>1.2 Finite Difference Operator</h3>
         <div class="explanation">
             <p>
-                For part 1.2,
+                For part 1.2, after calculating the gradient magnitude and binarizing the image
+                by setting a threshold, I found that a threshold ranging from 0.05 to 0.20 showed
+                major differences. For instance, at threshold = 0.05, I could see most of the edges
+                outlining the buildings in the background of the image as well as some edges of
+                the grass. However, there was also some noise in the background of the sky. At
+                threshold = 0.10, there were still edges for buildings but less noise. At 0.20, 
+                there was little noise but buildings in the background appear imperceptible because
+                their edges were not captured. Overall, I think a threshold of around 0.10 captures
+                enough detail while filtering out noise. 
             </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Partial Derivative X</h4>
+                <img src="code/output/cameraman_x.png" alt="Cameraman x finite difference operator">
+                <p>Cameraman x finite difference operator</p>
+            </div>
+            <div class="image-container">
+                <h4>Partial Derivative Y</h4>
+                <img src="code/output/cameraman_y.png" alt="Cameraman y finite difference operator">
+                <p>Cameraman y finite difference operator</p>
+            </div>
+            <div class="image-container">
+                <h4>Gradient Magnitude</h4>
+                <img src="code/output/grad_mag.png" alt="Cameraman gradient magnitude">
+                <p>Cameraman gradient magnitude</p>
+            </div>
+            <div class="image-container">
+                <h4>Binarized Image (Threshold = 0.05)</h4>
+                <img src="code/output/binarized_05.png" alt="Binarized Image (Threshold = 0.05)">
+                <p>Cameraman binarized edge image threshold = 0.05</p>
+            </div>
+            <div class="image-container">
+                <h4>Binarized Image (Threshold = 0.10)</h4>
+                <img src="code/output/binarized_10.png" alt="Binarized Image (Threshold = 0.10)">
+                <p>Cameraman binarized edge image threshold = 0.10</p>
+            </div>
+            <div class="image-container">
+                <h4>Binarized Image (Threshold = 0.20)</h4>
+                <img src="code/output/binarized_20.png" alt="Binarized Image (Threshold = 0.20)">
+                <p>Cameraman binarized edge image threshold = 0.20</p>
+            </div>
+        </div>
+        <h3>1.3 Derivative of Gaussian (DoG) Filter</h3>
+        <div class="explanation">
+            <p>
+                By using a Gaussian blur before calculating gradient magnitude with the finite
+                difference operators, I actually see more edges preserved than in the binarized image
+                while noise is also still reduced (no speckles of white). This may be because the 
+                blurring reduces high frequency noise in the image while still preserving edges,
+                which are then picked up by the finite difference operators. In contrast, the binarized
+                image without Gaussian blur has more noise and less clear edges.
+            </p>
+            <div class="image-comparison">
+                <div class="image-container">
+                    <h4>Gaussian Blur Double Convolution</h4>
+                    <img src="code/output/grad_mag_blur.png" alt="Gaussian blur convolution">
+                    <p>Gaussian blur and convolution</p>
+                </div>
+            </div>
+            <p>
+                When taking the derivative of Gaussian filters and a single convolution instead of 
+                2, I see the same thing!
+            </p>
+            <div class="image-comparison">
+                <div class="image-container">
+                    <h4>Gaussian Blur Single Convolution X</h4>
+                    <img src="code/output/grad_x_dog.png" alt="Gaussian blur convolution with derivatives">
+                    <p>Gaussian blur with Gaussian derivatives</p>
+                </div>
+                <div class="image-container">
+                    <h4>Gaussian Blur Single Convolution Y</h4>
+                    <img src="code/output/grad_y_dog.png" alt="Gaussian blur convolution with derivative in Y">
+                    <p>Gaussian blur with Gaussian derivative in Y</p>
+                </div>
+                <div class="image-container">
+                    <h4>Gaussian Blur Single Convolution</h4>
+                    <img src="code/output/grad_mag_dog.png" alt="Gaussian blur convolution with derivatives">
+                    <p>Gaussian blur with Gaussian derivatives</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
