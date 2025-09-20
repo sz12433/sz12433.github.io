@@ -366,33 +366,82 @@
                 which are then picked up by the finite difference operators. In contrast, the binarized
                 image without Gaussian blur has more noise and less clear edges.
             </p>
-            <div class="image-comparison">
-                <div class="image-container">
-                    <h4>Gaussian Blur Double Convolution</h4>
-                    <img src="code/output/grad_mag_blur.png" alt="Gaussian blur convolution">
-                    <p>Gaussian blur and convolution</p>
-                </div>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Gaussian Blur Double Convolution</h4>
+                <img src="code/output/grad_mag_blur.png" alt="Gaussian blur convolution">
+                <p>Gaussian blur and convolution</p>
             </div>
+        </div>
+        <div class="explanation">
             <p>
                 When taking the derivative of Gaussian filters and a single convolution instead of 
                 2, I see the same thing!
             </p>
-            <div class="image-comparison">
-                <div class="image-container">
-                    <h4>Gaussian Blur Single Convolution X</h4>
-                    <img src="code/output/grad_x_dog.png" alt="Gaussian blur convolution with derivatives">
-                    <p>Gaussian blur with Gaussian derivatives</p>
-                </div>
-                <div class="image-container">
-                    <h4>Gaussian Blur Single Convolution Y</h4>
-                    <img src="code/output/grad_y_dog.png" alt="Gaussian blur convolution with derivative in Y">
-                    <p>Gaussian blur with Gaussian derivative in Y</p>
-                </div>
-                <div class="image-container">
-                    <h4>Gaussian Blur Single Convolution</h4>
-                    <img src="code/output/grad_mag_dog.png" alt="Gaussian blur convolution with derivatives">
-                    <p>Gaussian blur with Gaussian derivatives</p>
-                </div>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Gaussian Blur Single Convolution X</h4>
+                <img src="code/output/grad_x_dog.png" alt="Gaussian blur convolution with derivatives">
+                <p>Gaussian blur with Gaussian derivatives</p>
+            </div>
+            <div class="image-container">
+                <h4>Gaussian Blur Single Convolution Y</h4>
+                <img src="code/output/grad_y_dog.png" alt="Gaussian blur convolution with derivative in Y">
+                <p>Gaussian blur with Gaussian derivative in Y</p>
+            </div>
+            <div class="image-container">
+                <h4>Gaussian Blur Single Convolution</h4>
+                <img src="code/output/grad_mag_dog.png" alt="Gaussian blur convolution with derivatives">
+                <p>Gaussian blur with Gaussian derivatives</p>
+            </div>
+        </div>
+        <h2>Part 2: Fun with Frequencies</h2>
+        <h3>2.1 Image "Sharpening"</h3>
+        <div class="explanation">
+            <p>
+                For evaluation, after sharpening my image at Mauna Kea (a volcano in Big Island,
+                Hawaii), I sharpened it again by blurring the sharpened image and then adding
+                back high frequencies to this image. I believe the sharpening increased as
+                the edge details of skin and hair appear more pronounced. 
+            </p>
+        </div>
+        <div class="image-comparison-2x2">
+            <div class="image-container">
+                <h4>Original Taj</h4>
+                <img src="code/output/original_taj.png" alt="Original image of Taj">
+                <p>Original image of Taj</p>
+            </div>
+            <div class="image-container">
+                <h4>Sharpened Taj</h4>
+                <img src="code/output/sharpened_taj.png" alt="Sharpened image of Taj">
+                <p>Sharpened image of Taj</p>
+            </div>
+            <div class="image-container">
+                <h4>Original SF</h4>
+                <img src="code/output/original_sf.png" alt="Original image of SF">
+                <p>Original image of SF</p>
+            </div>
+            <div class="image-container">
+                <h4>Sharpened SF</h4>
+                <img src="code/output/sharpened_sf.png" alt="Sharpened image of SF">
+                <p>Sharpened image of SF</p>
+            </div>
+            <div class="image-container">
+                <h4>Original Mauna Kea</h4>
+                <img src="code/output/original_mauna_kea.png" alt="Original image of Mauna Kea">
+                <p>Original image of Mauna Kea</p>
+            </div>
+            <div class="image-container">
+                <h4>Sharpened Mauna Kea</h4>
+                <img src="code/output/sharpened_mauna_kea.png" alt="Sharpened image of Mauna Kea">
+                <p>Sharpened image of Mauna Kea</p>
+            </div>
+            <div class="image-container">
+                <h4>Twice-Sharpened Mauana Kea</h4>
+                <img src="code/output/twice_sharpened_mauna_kea.png" alt="Twice-sharpened image of Mauna Kea">
+                <p>Twice-sharpened image of Mauna Kea</p>
             </div>
         </div>
     </div>
