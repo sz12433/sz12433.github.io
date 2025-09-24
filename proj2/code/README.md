@@ -4,6 +4,7 @@ current questions:
 
 notes:
 - had some success in hybrid images by trying both images as high or low filter and then seeing which one is more natural to the eye
+- implement 2.4 first and then 2.3 as per Ed recommendation
 
 how to run the code:
 1. 
