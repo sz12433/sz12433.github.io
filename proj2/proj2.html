@@ -537,7 +537,13 @@
         </div>
         <div class="explanation">
             <p>
-                Frequency cutoff sigma1 = 4, sigma2 = 8
+                For my favorite image, I'd like to illustrate my hybridization of an image of milkbread
+                and an image of a corgi! It took some experimentation with choosing frequency cutoffs as well
+                as alignment points, but I ended up with: frequency cutoff sigma1 = 4, sigma2 = 8. In terms
+                of alignment points, I chose the 2 centers of the top of the milkbread halves and for the corgi
+                its (super cute) butt and then the center of the head. This was a little less straightforward
+                than Derek and Nutmeg, probably because there were corresponding facial features that I could
+                look for, so I mostly aimed to line up the general shapes of each figure. 
             </p>
         </div>
         <div class="image-comparison-2x2">
@@ -606,7 +612,7 @@
             <div class="image-container">
                 <h4>Stern Yi</h4>
                 <img src="code/pics/stern_yi.jpg" alt="Image of stern Yi">
-                <p>Image 1 (high frequency)</p>
+                <p>Image 1 (high frequency) of my friend Yi</p>
             </div>
             <div class="image-container">
                 <h4>Puzzled Yi</h4>
@@ -622,7 +628,17 @@
         <h3>2.3 Gaussian and Laplacian Stacks & 2.4 Multiresolution Blending</h3>
         <div class="explanation">
             <p>
-                
+                For parts 2.3 and 2.4, after implementing Guassian and Laplacian stacks, I actually first
+                tried implementing part 2.4 to apply the stacks and then multiresolution blending, and then
+                went back to complete 2.3 and recreate Figure 3.42 from the SIGGRAPH 2006 paper.
+            </p>
+            <p>
+                Initially, I was stuck on getting past having a noticeable seam between blending the apple
+                and orange to create the oraple image, but what helped significantly was (perusing Ed) and 
+                trying to create a transition zone in the mask itself rather than strictly have 1 values on the
+                left (apple) side and 0s on the right (orange) side. In this way, the transition helped to
+                make the seam between the two much more natural and less harsh. I included 2 pictures correlating
+                to my initial blending attempt and my post-mask update with the transition zone.
             </p>
         </div>
         <div class="single-image-container">
@@ -637,30 +653,55 @@
             <img src="code/output/oraple_figure.png" alt="Oraple Figure">
             <p>Levels of blending</p>
         </div>
-
-        <div class="single-image-container">
-            <img src="code/output/oraple_attempt.png" alt="Initial Oraple blending attempt">
-            <p>Mask placement</p>
+   
+        <div class="explanation">
+            <p>
+                Similarly for blending together images with irregular masks, I did a lot of photo album
+                scrolling and experimenting to find some cool pictures that could work! I think the main
+                challenge for this was developing the right mask, because initially I would try to update
+                my mask coordinates based on my image inputs. However, what was super helpful was creating
+                a visual plot to also show where the mask itself was landing specifically, and from there
+                I could tune it to be more accurate and line up to where I chose in my images.
+            </p>
+            <p>
+                My first pair of images involved blending together a box of pastries that I got from Butter
+                & Crumble, located in SF! I woke up at 6AM to make sure I could get the pastries before they
+                sold out ... but it was worth it! I then combined a picture of a hojicha latte from a cafe
+                trip later that day with my box of pastries, replacing the hazelnut praline espresso croffin
+                in the center because they lined up similarly. 
+            </p>
+            <p>
+                The next pair of images are from the Summit One Vanderbilt observatory deck in NYC and 
+                a picture from my birthday 2 years ago! I thought it was the perfect opportunity to try 
+                and make it look as though I were cutting into one of the balloons from the observatory
+                deck. Originally, I also tried using a circular mask for this blend, however, due to the
+                shape of the cake in image 2, I decided to create an elliptical mask instead to make the
+                blending look more natural.
+            </p>
         </div>
         <div class="single-image-container">
-            <img src="code/output/oraple_updated.png" alt="Updated Oraple blending attempt">
+            <img src="code/output/pastry_latte_mask.png" alt="Pastry + latte mask">
+            <p>Pastry + latte circular mask placement</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/pastry_latte_blend.png" alt="Pastry + latte blending">
             <p>Multiresolution blending for pastry + latte</p>
         </div>
         <div class="single-image-container">
-            <img src="code/output/oraple_figure.png" alt="Oraple Figure">
-            <p>Levels of blending</p>
+            <img src="code/output/pastry_latte_figure.png" alt="Pastry + latte figure">
+            <p>Levels of blending </p>
         </div>
 
         <div class="single-image-container">
-            <img src="code/output/oraple_attempt.png" alt="Initial Oraple blending attempt">
-            <p>Mask placement</p>
+            <img src="code/output/balloon_cake_mask.png" alt="Balloon + cake mask">
+            <p>Balloon + cake elliptical mask placement</p>
         </div>
         <div class="single-image-container">
-            <img src="code/output/oraple_updated.png" alt="Updated Oraple blending attempt">
+            <img src="code/output/balloon_cake_blend.png" alt="Balloon + cake blending">
             <p>Multiresolution blending for balloon + cake</p>
         </div>
         <div class="single-image-container">
-            <img src="code/output/oraple_figure.png" alt="Oraple Figure">
+            <img src="code/output/balloon_cake_figure.png" alt="Balloon + cake figure">
             <p>Levels of blending</p>
         </div>
     </div>
