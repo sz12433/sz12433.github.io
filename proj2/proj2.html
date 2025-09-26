@@ -237,8 +237,48 @@
         }
 
         /* modify built-in code block to stand out more with a darker background */
-        code { background:#dfe0e2; padding:2px 4px; border-radius:4px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-        pre code { display:block; padding:12px; }
+        code { 
+            background:#dfe0e2; 
+            padding:2px 4px; 
+            border-radius:4px; 
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace; 
+        }
+        
+        pre {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            overflow-x: auto;
+            max-width: 100%;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        pre code { 
+            display: block; 
+            padding: 0; 
+            background: transparent;
+            font-size: 0.8rem;
+            line-height: 1.4;
+            white-space: pre;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #111827;
+            margin: 32px 0 16px 0;
+        }
+        
+        h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 24px 0 12px 0;
+        }
     </style>
     
 </head>
@@ -286,6 +326,53 @@
                 my picture with the operator in the Y direction shows some horizontal edges.
             </p>
         </div>
+
+        <h4>Implementation Details</h4>
+        
+        <h5>4 For Loops Implementation (conv4)</h5>
+        <pre><code># 4 for loops
+def conv4(img, kernel):
+    h, w = img.shape
+    kh, kw = kernel.shape
+    padh, padw = kh // 2, kw // 2 # pad height and width
+
+    # flip kernel horizontally + vertically
+    kernel = np.flipud(np.fliplr(kernel)) # flipud = vertical flip (up, down), fliplr = horizontal (left, right)
+
+    # pad with zeros on all sides
+    padded = np.pad(img, ((padh, padh), (padw, padw)), mode = 'constant')
+    out = np.zeros_like(img) # output array stores convolved values
+
+    for i in range(h): # loop over image
+        for j in range(w):
+            val = 0
+            for m in range(kh): # loop over kernel
+                for n in range(kw):
+                    val += padded[i + m, j + n] * kernel[m, n]
+            out[i, j] = val
+
+    return out</code></pre>
+
+        <h5>2 For Loops Implementation (conv2)</h5>
+        <pre><code># 2 for loops
+def conv2(img, kernel):
+    h, w = img.shape
+    kh, kw = kernel.shape
+    padh, padw = kh // 2, kw // 2 # pad height and width
+
+    # flip kernel horizontally + vertically
+    kernel = np.flipud(np.fliplr(kernel))
+
+    # pad with zeros on all sides
+    padded = np.pad(img, ((padh, padh), (padw, padw)), mode = 'constant')
+    out = np.zeros_like(img) # output array stores convolved values
+
+    for i in range(h): # loop over image
+        for j in range(w):
+            region = padded[i:i + kh, j:j + kw] # region of interest
+            out[i, j] = np.sum(region * kernel) # multiplication and sum
+
+    return out</code></pre>
 
         <div class="image-comparison">
             <div class="image-container">

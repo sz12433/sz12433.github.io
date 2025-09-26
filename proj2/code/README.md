@@ -1,10 +1,3 @@
-current questions:
-- include code snippets of what ? :o
-- is it better to use my output images or the plt inline iamges?
-
-notes:
-- had some success in hybrid images by trying both images as high or low filter and then seeing which one is more natural to the eye
-- implement 2.4 first and then 2.3 as per Ed recommendation
-
-how to run the code:
-1. 
+*How to Run Code:*
+1. Running the main.ipynb file in the code folder should work!
+2. If running into any issues with choosing 2 input alignment points for section 2.2, it may help to Interrupt the running process and then simply run the specific cell again and the rest of the code from there.
