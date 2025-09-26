@@ -89,6 +89,35 @@
             margin: 32px 0;
         }
         
+        .single-image-container {
+            text-align: center;
+            background-color: #f9fafb;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            margin: 32px 0;
+            transition: all 0.2s ease;
+        }
+        
+        .single-image-container:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .single-image-container img {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .single-image-container p {
+            margin: 12px 0 0 0;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
         .image-container {
             text-align: center;
             background-color: #f9fafb;
@@ -401,10 +430,12 @@
         <h3>2.1 Image "Sharpening"</h3>
         <div class="explanation">
             <p>
-                For evaluation, after sharpening my image at Mauna Kea (a volcano in Big Island,
-                Hawaii), I sharpened it again by blurring the sharpened image and then adding
-                back high frequencies to this image. I believe the sharpening increased as
-                the edge details of skin and hair appear more pronounced. 
+                In terms of sharpening, we can achieve a sharper image by first blurring an image (I used
+                a Gaussian filter), and then subtracting the blurred image from the original image. By doing:
+                img - blurred, we're left with = high frequency edges. We can then add these high Frequencies
+                to the original image to enhance the edges there, creating the effect that sharpening has
+                on images. The visual representation of these steps can be seen in the series of Taj Mahal
+                photos below!
             </p>
         </div>
         <div class="image-comparison-2x2">
@@ -414,10 +445,32 @@
                 <p>Original image of Taj</p>
             </div>
             <div class="image-container">
+                <h4>Blurred Taj</h4>
+                <img src="code/output/blurred_taj.png" alt="Blurred image of Taj">
+                <p>Blurred with Gaussian image of Taj</p>
+            </div>
+            <div class="image-container">
+                <h4>High Frequency Taj</h4>
+                <img src="code/output/high_freq_taj.png" alt="High frequency image of Taj">
+                <p>Original image of Taj</p>
+            </div>
+            <div class="image-container">
                 <h4>Sharpened Taj</h4>
                 <img src="code/output/sharpened_taj.png" alt="Sharpened image of Taj">
                 <p>Sharpened image of Taj</p>
             </div>
+        </div>
+
+        <div class="explanation">
+            <p>
+                Additionally, we can vary how much we sharpen images by through weighting the edges
+                from the high-frequency image differently. Higher weighting means more intense edges,
+                and a greater sharpening effect. The opposite occurs with lower weighting. By changing
+                a parameter to weigh the high-frequency edges (alpha), I experimented with values ranging
+                from 0.5-3 to apply as weights to the high-frequency image based on the below pictures from SF!
+            </p>
+        </div>
+        <div class="image-comparison-2x2">
             <div class="image-container">
                 <h4>Original SF</h4>
                 <img src="code/output/original_sf.png" alt="Original image of SF">
@@ -428,6 +481,21 @@
                 <img src="code/output/sharpened_sf.png" alt="Sharpened image of SF">
                 <p>Sharpened image of SF</p>
             </div>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/sharpened_sf_alphas.png" alt="Sharpened SF with different alpha values">
+            <p>Sharpened SF image showing different alpha values for unsharp masking</p>
+        </div>
+
+        <div class="explanation">
+            <p>
+                For evaluation, after sharpening my image at Mauna Kea (a volcano in Big Island,
+                Hawaii), I sharpened it again by blurring the sharpened image and then adding
+                back high frequencies to this image. I believe the sharpening increased as
+                the edge details of skin and hair appear more pronounced. 
+            </p>
+        </div>
+        <div class="image-comparison-2x2">
             <div class="image-container">
                 <h4>Original Mauna Kea</h4>
                 <img src="code/output/original_mauna_kea.png" alt="Original image of Mauna Kea">
@@ -443,6 +511,157 @@
                 <img src="code/output/twice_sharpened_mauna_kea.png" alt="Twice-sharpened image of Mauna Kea">
                 <p>Twice-sharpened image of Mauna Kea</p>
             </div>
+        </div>
+        <h3>2.2 Hybrid Images</h3>
+        <div class="explanation">
+            <p>
+                
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Derek</h4>
+                <img src="code/pics/DerekPicture.jpg" alt="Image of Derek">
+                <p>Image 1 (high frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Nutmeg</h4>
+                <img src="code/pics/nutmeg.jpg" alt="Image of Nutmeg">
+                <p>Image 2 (low frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Derek + Nutmeg Hybrid</h4>
+                <img src="code/output/derek_nutmeg.png" alt="Derek + Nutmeg Hybrid">
+                <p>Derek up close, Nutmeg from far away</p>
+            </div>
+        </div>
+        <div class="explanation">
+            <p>
+                Frequency cutoff sigma1 = 4, sigma2 = 8
+            </p>
+        </div>
+        <div class="image-comparison-2x2">
+            <div class="image-container">
+                <h4>Milkbread</h4>
+                <img src="code/pics/milkbread.jpg" alt="Image of milkbread">
+                <p>Image 1 original</p>
+            </div>
+            <div class="image-container">
+                <h4>Corgi</h4>
+                <img src="code/pics/corgi.jpg" alt="Image of corgi">
+                <p>Image 2 original</p>
+            </div>
+            <div class="image-container">
+                <h4>Aligned Milkbread</h4>
+                <img src="code/output/aligned_milkbread.png" alt="Image of aligned milkbread">
+                <p>Image 1 aligned</p>
+            </div>
+            <div class="image-container">
+                <h4>Aligned Corgi</h4>
+                <img src="code/output/aligned_corgi.png" alt="Image of aligned corgi">
+                <p>Image 2 aligned</p>
+            </div>
+            <div class="image-container">
+                <h4>Filtered Milkbread</h4>
+                <img src="code/output/filtered_milkbread.png" alt="Image of filtered milkbread">
+                <p>Image 1 filtered (high-frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Filtered Corgi</h4>
+                <img src="code/output/filtered_corgi.png" alt="Image of filtered corgi">
+                <p>Image 2 filtered (low-frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Milkbread + Corgi Hybrid</h4>
+                <img src="code/output/bread_corgi.png" alt="Milkbread + Corgi Hybrid">
+                <p>Derek up close, Nutmeg from far away</p>
+            </div>
+            <div class="image-container">
+                <h4>FFT Input Milkbread</h4>
+                <img src="code/output/fft_input_milkbread.png" alt="FFT Input Milkbread">
+                <p>Log magnitude FFT</p>
+            </div>
+            <div class="image-container">
+                <h4>FFT Input Corgi</h4>
+                <img src="code/output/fft_input_corgi.png" alt="FFT Input Milkbread">
+                <p>Log magnitude FFT</p>
+            </div>
+            <div class="image-container">
+                <h4>FFT High-Pass Milkbread</h4>
+                <img src="code/output/fft_high_pass_milkbread.png" alt="FFT High-Pass Milkbread">
+                <p>Log magnitude FFT</p>
+            </div>
+            <div class="image-container">
+                <h4>FFT High-Pass Corgi</h4>
+                <img src="code/output/fft_low_pass_corgi.png" alt="FFT High-Pass Corgi">
+                <p>Log magnitude FFT</p>
+            </div>
+            <div class="image-container">
+                <h4>FFT Hybrid</h4>
+                <img src="code/output/fft_hybrid.png" alt="fft_low_pass_corgi">
+                <p>Log magnitude FFT</p>
+            </div>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Stern Yi</h4>
+                <img src="code/pics/stern_yi.jpg" alt="Image of stern Yi">
+                <p>Image 1 (high frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Puzzled Yi</h4>
+                <img src="code/pics/puzzled_yi.jpg" alt="Image of puzzled Yi">
+                <p>Image 2 (low frequency)</p>
+            </div>
+            <div class="image-container">
+                <h4>Stern + Puzzled Yi Hybrid</h4>
+                <img src="code/output/yi_hybrid.png" alt="Stern + Puzzled Yi Hybrid">
+                <p>Stern up close, puzzled from far away</p>
+            </div>
+        </div>
+        <h3>2.3 Gaussian and Laplacian Stacks & 2.4 Multiresolution Blending</h3>
+        <div class="explanation">
+            <p>
+                
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_attempt.png" alt="Initial Oraple blending attempt">
+            <p>Multiresolution blending for oraple</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_updated.png" alt="Updated Oraple blending attempt">
+            <p>Multiresolution blending for oraple using a mask with a smoother transition zone</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_figure.png" alt="Oraple Figure">
+            <p>Levels of blending</p>
+        </div>
+
+        <div class="single-image-container">
+            <img src="code/output/oraple_attempt.png" alt="Initial Oraple blending attempt">
+            <p>Mask placement</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_updated.png" alt="Updated Oraple blending attempt">
+            <p>Multiresolution blending for pastry + latte</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_figure.png" alt="Oraple Figure">
+            <p>Levels of blending</p>
+        </div>
+
+        <div class="single-image-container">
+            <img src="code/output/oraple_attempt.png" alt="Initial Oraple blending attempt">
+            <p>Mask placement</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_updated.png" alt="Updated Oraple blending attempt">
+            <p>Multiresolution blending for balloon + cake</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/output/oraple_figure.png" alt="Oraple Figure">
+            <p>Levels of blending</p>
         </div>
     </div>
 </body>
