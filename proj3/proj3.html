@@ -455,6 +455,86 @@
             <img src="code/output/bagel_warped.png" alt="Warped bagel images">
             <p>Comparison of nearest neighbor vs. bilinear interpolation on bagels</p>
         </div>
+
+        <h3>A.4 Blend the Images into a Mosaic</h3>
+        <div class="explanation">
+            <p>
+                To create an image mosaic, I tried implementing the one-shot procedure by warping all images at once. However, I realized
+                I had to modify my bilinear interpolation function to handle the entire output shape of the mosaic, rather than try
+                to combine and blend images without knowing the dimensions of the output. I also tried using vectorized operations in this
+                modified function to speed up the process of warping each image to the output mosaic shape.
+            </p>
+            <p>
+                Next, I used the homography matrix and a translation matrix to warp each image to the correct position in the output mosaic.
+                From there, I could warp the first image with just the translation transformation, and then warp the second image onto the
+                output by combining the homography and translation transformations. To handle blending, I took a weighted average of the two
+                images based on distance from the edge of each image, so that pixels closer to the edge would have a lower weight and pixels 
+                closer to the center would have a higher weight. This helped to smooth out edge artifacts, as seen in the mosaics below!
+            </p>
+            <p>
+                I had a lot of fun going around campus taking pictures of iconic landmarks at Berkeley (not pictured, Campanile shots)
+                as well as exploring my photos from previous travels like my trip to Banff and Jasper National Park in Canada this summer!
+            </p>
+        </div>
+        <div class = "image-comparison-2x2">
+            <div class="image-container">
+                <h4>Grimes 1</h4>
+                <img src="code/pics/grimes1.png" alt="Grimes 1">
+                <p>Source image 1 of Grimes Engineering Center</p>
+            </div>
+            <div class="image-container">
+                <h4>Grimes 2</h4>
+                <img src="code/pics/grimes2.png" alt="Grimes 2">
+                <p>Source image 2 of Grimes</p>
+            </div>
+        </div>
+        <div class = "single-image-container">
+            <div class="image-container">
+                <h4>Grimes Mosaic</h4>
+                <img src="code/output/grimes_mosaic.png" alt="Grimes Mosaic">
+                <p>Mosaic of Grimes</p>
+            </div>
+        </div>
+
+        <div class = "image-comparison-2x2">
+            <div class="image-container">
+                <h4>Inside Grimes 1</h4>
+                <img src="code/pics/floor1.png" alt="Inside Grimes 1">
+                <p>Source image 1 of inside Grimes</p>
+            </div>
+            <div class="image-container">
+                <h4>Inside Grimes 2</h4>
+                <img src="code/pics/floor2.png" alt="Inside Grimes 2">
+                <p>Source image 2 of inside Grimes</p>
+            </div>
+        </div>
+        <div class = "single-image-container">
+            <div class="image-container">
+                <h4>Inside Grimes Mosaic</h4>
+                <img src="code/output/floor_mosaic.png" alt="Inside Grimes Mosaic">
+                <p>Mosaic of Inside Grimes</p>
+            </div>
+        </div>
+
+        <div class = "image-comparison-2x2">
+            <div class="image-container">
+                <h4>Skywalk 1</h4>
+                <img src="code/pics/skywalk1.png" alt="Skywalk  1">
+                <p>Source image 1 of the Skywalk at Jasper National Park</p>
+            </div>
+            <div class="image-container">
+                <h4>Skywalk 2</h4>
+                <img src="code/pics/skywalk2.png" alt="Skywalk  2">
+                <p>Source image 2 of the Skywalk at Jasper National Park</p>
+            </div>
+        </div>
+        <div class = "single-image-container">
+            <div class="image-container">
+                <h4>Skywalk Mosaic</h4>
+                <img src="code/output/skywalk_mosaic.png" alt="Skywalk Mosaic">
+                <p>Mosaic of the Skywalk (a glass floor observation platform!)</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
