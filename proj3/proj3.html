@@ -372,8 +372,19 @@
         <h3>A.2 Recover Homographies</h3>
         <div class="explanation">
             <p>
-                [system of equations here]
+                To set up the system of equations for recovering the unknown homography matrix, I first wrote the given terms we have
+                (im1_pts, im2_pts as the x, y coordinates from our 2 images) in the form of Ah = b. Here, it was particularly important
+                for me to remember that the vector h only has 8 unknowns and not 9, since there are 8 degrees of freedom in this transformation.
+                From there, if we multiply both the known and unknown terms, and then divide by our third coordinate as seen in the steps 
+                that I took in the image below, then we have two equations of x' and y'. However, we can rewrite this further by multiplying
+                both sides of both equations and then expanding the left-hand-side (LHS). Finally, we're left with a system of linear
+                equations to solve for the unknown h vector. 
             </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Homography Equations</h4>
+            <img src="code/pics/homography_eqns.jpg" alt="Homography Equations">
+            <p>How I derived the system of equations used for recovering our homography matrix</p>
         </div>
         <div class = "single-image-container">
             <h4>Grimes</h4>
@@ -383,9 +394,9 @@
         <div class="matrix-container">
             <div class="matrix-item">
                 <h5>Grimes Recovered Homography</h5>
-                <div class="matrix">[[ 2.18986223e+00  5.12738032e-02 -4.91297051e+02]
-[ 5.15139401e-01  1.97758165e+00 -2.24837851e+02]
-[ 1.66905104e-03  6.70455184e-04  1.00000000e+00]]</div>
+                <div class="matrix">[[ 1.60904060e+00 -2.20491579e-01 -3.01711667e+02]
+[ 3.70956942e-01  1.25978761e+00 -1.22533018e+02]
+[ 1.14276180e-03 -5.01873778e-04  1.00000000e+00]]</div>
             </div>
         </div>
         <div class = "single-image-container">
@@ -397,10 +408,52 @@
         <div class="matrix-container">
             <div class="matrix-item">
                 <h5>Inside Grimes Recovered Homography</h5>
-                <div class="matrix">[[ 1.06919268e+01  1.96501741e-01 -2.84312863e+03]
-[ 3.81620265e+00  6.13898895e+00 -1.14967953e+03]
-[ 1.72144180e-02 -2.77560575e-03  1.00000000e+00]]</div>
+                <div class="matrix">[[ 1.34953238e+00 -1.02735203e-01 -2.84574897e+02]
+[-6.49643399e-02  1.20693002e+00  1.95695271e+01]
+[ 5.01632297e-04 -2.92740559e-04  1.00000000e+00]]</div>
             </div>
+        </div>
+        <h3>A.3 Warp the Images</h3>
+        <div class="explanation">
+            <p>
+                Now that we've recovered our homography matrix, we can apply the homography to warp our input images. We tried 2
+                interpolation methods: nearest neighbor and bilinear interpolation. Whereas nearest neighbor interpolation will round
+                coordinates to the nearest pixel value, bilinear interpolation will use a weighted average from the 4 nearest pixels.
+            </p>
+            <p>
+                The tips from staff included in our project spec were very helpful! In order to handle predicting the bounding box
+                for the resulting warped image, I implemented a helper function that essentially applied the homography transformation
+                to each of the 4 corners of the input image, and then took the minimum and maximum x and y values to basically serve as
+                a container with dimensions to fit the output warped image. From there, I called this helper function to compute the
+                output bounds in both nearest neighbor and bilinear interpolation. My process involved looping through each coordinate
+                within the bounds of the output image dimensions (computed by our helper) and then mapping that coordinate back into the
+                source image by using the inverse of the homography matrix. 
+            </p>
+            <p>
+                For nearest neighbor interpolation, the source coordinates were rounded to the nearest integer to find the nearest neighbor
+                pixel value, and then that value was assigned to the output pixel. However, for bilinear interpolation, I used the floor
+                and ceiling method on the source coordinates to find the 4 closest pixels. Then, I subtracted these coordinates from 
+                the source coordinates to find the distance between, and use this distance to weight the pixel values and take a weighted average
+                first of the top two pixels, then the bottom two pixels, and then finally between the top and bottom averages to get
+                the final weighted average pixel value to assign to the output pixel.
+            </p>
+            <p>
+                When it comes to comparing quality and speed, nearest neighbor interpolation ran faster than bilinear interpolation, but
+                as seen in my images below (may need to zoom in a bit!), bilinear interpolation tended to produce a more smooth warping in 
+                tradeoff for speed. When testing my code by trying image rectification, nearest neighbor interpolation took around 5.6s 
+                whereas bilinear interpolation took around 9s on my image of a poke bowl, and likewise nearest neighbor vs. bilinear interpolation
+                ran for 13.1s vs. 21.6s for my image of bagels. 
+            </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Warped Poke Bowl</h4>
+            <img src="code/output/poke_warped.png" alt="Warped poke images">
+            <p>Comparison of nearest neighbor vs. bilinear interpolation on a poke bowl</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Warped Bagel</h4>
+            <img src="code/output/poke_warped.png" alt="Warped bagel images">
+            <p>Comparison of nearest neighbor vs. bilinear interpolation on bagels</p>
         </div>
     </div>
 </body>
