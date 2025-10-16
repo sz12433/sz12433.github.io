@@ -630,7 +630,77 @@
             <img src="code/output/skywalk_mosaic.png" alt="Skywalk Mosaic">
             <p>Mosaic of the Skywalk (a glass floor observation platform!)</p>
         </div>
+
+
+        <h2>Part B</h2>
+        <h3>B.1 Harris Corner Detection</h3>
+        <div class="explanation">
+            <p>
+                To obtain the Harris corners for my images, I ran the sample code provided in our project spec and then ran get_harris_corners()
+                on my input images. To visualize the corners overlaid on the image, I plotted the Harris corner coordinates as a scatterplot
+                over the image. I decided to try this on my image sets of the Grimes Engineering Center, the Campanile, as well as a vertical
+                shot I took of the World Trade Center (WTC) in NYC! When run on my images below, many corners were initially detected, with 
+                almost the entire space of the image being seemingly filled with corners. 
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Grimes Harris Corners</h4>
+                <img src="code/output/grimes1_harris_corners.png" alt="Grimes Harris Corners">
+                <p>Harris corners detected on an image of Grimes</p>
+            </div>
+            <div class="image-container">
+                <h4>Campanile Harris Corners</h4>
+                <img src="code/output/campanile1_harris_corners.png" alt="Campanile Harris Corners">
+                <p>Harris corners detected on an image of the Campanile</p>
+            </div>
+            <div class="image-container">
+                <h4>World Trade Center (WTC) Harris Corners</h4>
+                <img src="code/output/wtc1_harris_corners.png" alt="WTC Harris Corners">
+                <p>Harris corners detected on an image of the WTC!</p>
+            </div>
+        </div>
+        <div class="explanation">
+            <p>
+                However, Adaptive Non-Maximal Suppression (ANMS) was very helpful in narrowing down corners of interest from Harris corner
+                detection. To implement ANMS, I followed the MOPS paper in initializing a suppression radius to compare corners to other
+                corners. First, I retrieved the corner strength values for each corner, and then for each corner, I looped through all 
+                other corners to check if a corner was potentially stronger than the current corner, and then computed the radius between
+                the two corners. If the radius was larger than the current suppression radius, then the larger suppressionr radius
+                becomes the new radius. After completing the loop, we can take the top N corners (I believe the paper chose 500)
+                with the largest suppression radius. 
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h4>Grimes ANMS Corners</h4>
+                <img src="code/output/grimes1_anms_corners.png" alt="Grimes ANMS Corners">
+                <p>ANMS corners detected on an image of Grimes</p>
+            </div>
+            <div class="image-container">
+                <h4>Campanile ANMS Corners</h4>
+                <img src="code/output/campanile1_anms_corners.png" alt="Campanile ANMS Corners">
+                <p>ANMS corners detected on an image of the Campanile</p>
+            </div>
+            <div class="image-container">
+                <h4>World Trade Center (WTC) ANMS Corners</h4>
+                <img src="code/output/wtc1_anms_corners.png" alt="WTC ANMS Corners">
+                <p>ANMS corners detected on an image of the WTC!</p>
+            </div>
+        </div>
+
+        <h3>B.2 Feature Descriptor Extraction</h3>
+        <div class="explanation">
+            <p>
+                To implement feature descriptor extraction, I first sampled from a 40x40 window, but skipped over points that were too
+                close to the edge of the image. From there, I resized down to 8x8 windows to extract patches in these dimensions.
+                I then normalized the patches by subtracting the mean and dividing by the standard deviation. Finally, I flattened these
+                patches into length = 64 vectors to serve as our feature descriptors.
+            </p>
+        </div>
     </div>
+
+    
     
     <!-- Modal for image enlargement -->
     <div id="imageModal" class="modal">
