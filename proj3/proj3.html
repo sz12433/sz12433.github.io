@@ -711,8 +711,82 @@
         </div>
         <div class = "single-image-container">
             <h4>WTC Feature Descriptors</h4>
-            <img src="code/output/WTC_feature_descriptors.png" alt="WTC Feature Descriptors">
+            <img src="code/output/wtc_feature_descriptors.png" alt="WTC Feature Descriptors">
             <p>8x8 Extracted Feature Descriptors from WTC image</p>
+        </div>
+
+        <h3>B.3 Feature Matching</h3>
+        <div class="explanation">
+            <p>
+                Next, to match features from one image to the other, I essentially looped through each feature descriptor in image 1 and
+                calculated the difference in Euclidean distance between that descriptor and all descriptors in image 2. Then, we can find
+                the smallest distance and then the next smallest distance, and apply Lowe's thresholding technique of dividing the smallest
+                distance by the second smallest distance and comparing it to a given threshold. The idea behind this is that a good match should
+                have a small ratio (below our chosen threshold, I experimented with thresholds depending on the image, but more on that coming!)
+                because the best match should be significantly better than the second best match, whereas bad matches may have multiple close 
+                distances. 
+            </p>
+            <p>
+                To elaborate, for my images of Grimes and the Campanile, I found that a threshold of 0.7 worked well to filter out bad matches,
+                whereas for my image of the WTC, I actually tried decreasing my threshold to 0.5 because I was worried some of my feature
+                matches would skew my final mosaic, however, I found that this threshold was too strict and I wasn't getting enough matches.
+                Below I include some diagrams of the features that were matched between using these different thresholds!
+            </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Grimes Feature Matching</h4>
+            <img src="code/output/grimes_feature_matches.png" alt="Grimes Feature Matching">
+            <p>Feature matches found for Grimes images</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Campanile Feature Matching</h4>
+            <img src="code/output/campanile_feature_matches.png" alt="Campanile Feature Matching">
+            <p>Feature matches found for Campanile images</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>WTC Feature Matching (Threshold = 0.7)</h4>
+            <img src="code/output/wtc_feature_matches.png" alt="WTC Feature Matching (Threshold = 0.7)">
+            <p>Feature matches found for WTC images with higher threshold</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>WTC Feature Matching (Threshold = 0.5)</h4>
+            <img src="code/output/wtc_feature_matches_0.5.png" alt="WTC Feature Matching (Threshold = 0.5)">
+            <p>Feature matches found for WTC images with stricter threshold</p>
+        </div>
+
+        <h3>B.4 RANSAC for Robust Homography</h3>
+        <div class="explanation">
+            <p>
+                After determining our feature matches, we can improve the robustness of our homography estimation by implementing RANSAC.
+                To do this, I looped through many iterations following the steps of:
+                <ol>
+                    <li>Randomly sampling 4 pairs of points because 4 is the minimum number of points needed to compute a homography</li>
+                    <li>Computing the homography matrix from these 4 pairs of points</li>
+                    <li>Checking how well H explains the point pairs by calculating the difference in distance between the projected point
+                    and the actual point (I used L2 distance again here)</li>
+                    <li>Keeping the best H (the one with the most inliers AKA best consensus)</li>
+                    <li>Recomputing the H with all the inliers and excluding the outliers</li>
+                </ol>
+            </p>
+            <p>
+                Here, we can see how both the Grimes and Campanile mosaic combine images in the horizontal direction, whereas the WTC
+                mosaic is the only vertical mosaic.
+            </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Grimes Mosaic (with RANSAC)</h4>
+            <img src="code/output/grimes_mosaic_ransac.png" alt="Grimes Mosaic (with RANSAC)">
+            <p>Grimes mosaic using points from RANSAC</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Campanile Mosaic (with RANSAC)</h4>
+            <img src="code/output/campanile_mosaic_ransac.png" alt="Campanile Mosaic (with RANSAC)">
+            <p>Campanile mosaic using points from RANSAC</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>WTC Mosaic (with RANSAC)</h4>
+            <img src="code/output/wtc_mosaic_ransac.png" alt="WTC Mosaic (with RANSAC)">
+            <p>WTC mosaic using points from RANSAC</p>
         </div>
     </div>
 
