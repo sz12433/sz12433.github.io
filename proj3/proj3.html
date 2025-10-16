@@ -695,8 +695,24 @@
                 To implement feature descriptor extraction, I first sampled from a 40x40 window, but skipped over points that were too
                 close to the edge of the image. From there, I resized down to 8x8 windows to extract patches in these dimensions.
                 I then normalized the patches by subtracting the mean and dividing by the standard deviation. Finally, I flattened these
-                patches into length = 64 vectors to serve as our feature descriptors.
+                patches into length = 64 vectors to serve as our feature descriptors. Below I include 15 extracted feature descriptors
+                for each of the below images.
             </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Grimes Feature Descriptors</h4>
+            <img src="code/output/grimes_feature_descriptors.png" alt="Grimes Feature Descriptors">
+            <p>8x8 Extracted Feature Descriptors from Grimes image</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Campanile Feature Descriptors</h4>
+            <img src="code/output/campanile_feature_descriptors.png" alt="Campanile Feature Descriptors">
+            <p>8x8 Extracted Feature Descriptors from Campanile image</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>WTC Feature Descriptors</h4>
+            <img src="code/output/WTC_feature_descriptors.png" alt="WTC Feature Descriptors">
+            <p>8x8 Extracted Feature Descriptors from WTC image</p>
         </div>
     </div>
 
