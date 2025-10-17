@@ -279,6 +279,16 @@
             color: #374151;
             margin: 24px 0 12px 0;
         }
+        /* add for formatting numbered list part (RANSAC) */
+        ol { 
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        ol li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
         
         .matrix-container {
             display: flex;
@@ -668,7 +678,8 @@
                 other corners to check if a corner was potentially stronger than the current corner, and then computed the radius between
                 the two corners. If the radius was larger than the current suppression radius, then the larger suppressionr radius
                 becomes the new radius. After completing the loop, we can take the top N corners (I believe the paper chose 500)
-                with the largest suppression radius. 
+                with the largest suppression radius. As a result of keeping the top 500 corners with the largest suppression radii,
+                we have a better distribution of corners across the image for better coverage in terms of image information. 
             </p>
         </div>
         <div class="image-comparison">
@@ -695,8 +706,10 @@
                 To implement feature descriptor extraction, I first sampled from a 40x40 window, but skipped over points that were too
                 close to the edge of the image. From there, I resized down to 8x8 windows to extract patches in these dimensions.
                 I then normalized the patches by subtracting the mean and dividing by the standard deviation. Finally, I flattened these
-                patches into length = 64 vectors to serve as our feature descriptors. Below I include 15 extracted feature descriptors
-                for each of the below images.
+                patches into length = 64 vectors (to preserve all 8x8 values from our patch) to serve as our feature descriptors. 
+                Below I include 15 extracted feature descriptors for each of the below images. Essentially, each 8x8 patch for a corner
+                can capture the structure of the image locally around the corner, which we can then leverage in matching features
+                between corresponding images. 
             </p>
         </div>
         <div class = "single-image-container">
@@ -718,13 +731,14 @@
         <h3>B.3 Feature Matching</h3>
         <div class="explanation">
             <p>
-                Next, to match features from one image to the other, I essentially looped through each feature descriptor in image 1 and
+                Next, to match features from one image to the other, I essentially looped through each feature descriptor that we extracted
+                from the previous section starting in image 1 and then
                 calculated the difference in Euclidean distance between that descriptor and all descriptors in image 2. Then, we can find
                 the smallest distance and then the next smallest distance, and apply Lowe's thresholding technique of dividing the smallest
                 distance by the second smallest distance and comparing it to a given threshold. The idea behind this is that a good match should
-                have a small ratio (below our chosen threshold, I experimented with thresholds depending on the image, but more on that coming!)
-                because the best match should be significantly better than the second best match, whereas bad matches may have multiple close 
-                distances. 
+                have a small ratio (below our chosen threshold, I experimented with thresholds depending on the image, but more on that next!)
+                because our theory is that the best match should be significantly better than the second best match, whereas bad matches may have multiple close 
+                contender distances. 
             </p>
             <p>
                 To elaborate, for my images of Grimes and the Campanile, I found that a threshold of 0.7 worked well to filter out bad matches,
@@ -743,15 +757,17 @@
             <img src="code/output/campanile_feature_matches.png" alt="Campanile Feature Matching">
             <p>Feature matches found for Campanile images</p>
         </div>
-        <div class = "single-image-container">
-            <h4>WTC Feature Matching (Threshold = 0.7)</h4>
-            <img src="code/output/wtc_feature_matches.png" alt="WTC Feature Matching (Threshold = 0.7)">
-            <p>Feature matches found for WTC images with higher threshold</p>
-        </div>
-        <div class = "single-image-container">
-            <h4>WTC Feature Matching (Threshold = 0.5)</h4>
-            <img src="code/output/wtc_feature_matches_0.5.png" alt="WTC Feature Matching (Threshold = 0.5)">
-            <p>Feature matches found for WTC images with stricter threshold</p>
+        <div class="image-comparison-2x2">
+            <div class = "image-container">
+                <h4>WTC Feature Matching (Threshold = 0.7)</h4>
+                <img src="code/output/wtc_feature_matches.png" alt="WTC Feature Matching (Threshold = 0.7)">
+                <p>Feature matches found for WTC images with higher threshold</p>
+            </div>
+            <div class = "image-container">
+                <h4>WTC Feature Matching (Threshold = 0.5)</h4>
+                <img src="code/output/wtc_feature_matches_0.5.png" alt="WTC Feature Matching (Threshold = 0.5)">
+                <p>Feature matches found for WTC images with stricter threshold</p>
+            </div>
         </div>
 
         <h3>B.4 RANSAC for Robust Homography</h3>
@@ -759,18 +775,24 @@
             <p>
                 After determining our feature matches, we can improve the robustness of our homography estimation by implementing RANSAC.
                 To do this, I looped through many iterations following the steps of:
-                <ol>
-                    <li>Randomly sampling 4 pairs of points because 4 is the minimum number of points needed to compute a homography</li>
-                    <li>Computing the homography matrix from these 4 pairs of points</li>
-                    <li>Checking how well H explains the point pairs by calculating the difference in distance between the projected point
-                    and the actual point (I used L2 distance again here)</li>
-                    <li>Keeping the best H (the one with the most inliers AKA best consensus)</li>
-                    <li>Recomputing the H with all the inliers and excluding the outliers</li>
-                </ol>
             </p>
+            <ol>
+                <li>Randomly sampling 4 pairs of points because 4 is the minimum number of points needed to compute a homography</li>
+                <li>Computing the homography matrix from these 4 pairs of points</li>
+                <li>Checking how well H explains the point pairs by calculating the difference in distance between the projected point
+                and the actual point (I used L2 distance again here)</li>
+                <li>Keeping the best H (the one with the most inliers AKA best consensus)</li>
+                <li>Recomputing the H with all the inliers and excluding the outliers</li>
+            </ol>
             <p>
                 Here, we can see how both the Grimes and Campanile mosaic combine images in the horizontal direction, whereas the WTC
                 mosaic is the only vertical mosaic.
+            </p>
+            <p>
+                Overall, moving from part A to part B has been super interesting because we can experience the gratification of progressing
+                from manually selecting points across our image sets to carefully identify correspondences to now being able to automatically
+                detect corners, extract feature descriptors, match features, and then robustly compute homographies to automate the process
+                of creating image mosaics!
             </p>
         </div>
         <div class = "single-image-container">
