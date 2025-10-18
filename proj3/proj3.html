@@ -786,7 +786,12 @@
             </ol>
             <p>
                 Here, we can see how both the Grimes and Campanile mosaic combine images in the horizontal direction, whereas the WTC
-                mosaic is the only vertical mosaic.
+                mosaic is the only vertical mosaic. In addition, below we can compare our mosaics stitched using manually-chosen points
+                from part A in contrast to our mosaics stitched using points from RANSAC in part B. Although they both look fairly reasonable
+                overall, I definitely think having an automated process to robustly compute homographies is more time-efficient and scalabe
+                because choosing manual points can be tedious and difficult. To elaborate, for my manually chosen points I experimented with
+                a lot of trial and error in trying different sets of points to see which ones could produce better mosaics. However, with
+                RANSAC, we can choose the best points algorithmically based on feature matching.
             </p>
             <p>
                 Overall, moving from part A to part B has been super interesting because we can experience the gratification of progressing
@@ -795,20 +800,43 @@
                 of creating image mosaics!
             </p>
         </div>
-        <div class = "single-image-container">
-            <h4>Grimes Mosaic (with RANSAC)</h4>
-            <img src="code/output/grimes_mosaic_ransac.png" alt="Grimes Mosaic (with RANSAC)">
-            <p>Grimes mosaic using points from RANSAC</p>
+        <div class = "image-comparison-2x2">
+            <div class = "single-image-container">
+                <h4>Grimes Mosaic (manual)</h4>
+                <img src="code/output/grimes_mosaic.png" alt="Grimes Mosaic (manual)">
+                <p>Grimes mosaic using manually-chosen points</p>
+            </div>
+            <div class = "single-image-container">
+                <h4>Grimes Mosaic (with RANSAC)</h4>
+                <img src="code/output/grimes_mosaic_ransac.png" alt="Grimes Mosaic (with RANSAC)">
+                <p>Grimes mosaic using points from RANSAC</p>
+            </div>
         </div>
-        <div class = "single-image-container">
-            <h4>Campanile Mosaic (with RANSAC)</h4>
-            <img src="code/output/campanile_mosaic_ransac.png" alt="Campanile Mosaic (with RANSAC)">
-            <p>Campanile mosaic using points from RANSAC</p>
+        
+        <div class = "image-comparison-2x2">
+            <div class = "single-image-container">
+                <h4>Campanile Mosaic (manual)</h4>
+                <img src="code/output/campanile_manual_mosaic.png" alt="Campanile Mosaic (manual)">
+                <p>Campanile mosaic using manually-chosen points</p>
+            </div>
+            <div class = "single-image-container">
+                <h4>Campanile Mosaic (with RANSAC)</h4>
+                <img src="code/output/campanile_mosaic_ransac.png" alt="Campanile Mosaic (with RANSAC)">
+                <p>Campanile mosaic using points from RANSAC</p>
+            </div>
         </div>
-        <div class = "single-image-container">
-            <h4>WTC Mosaic (with RANSAC)</h4>
-            <img src="code/output/wtc_mosaic_ransac.png" alt="WTC Mosaic (with RANSAC)">
-            <p>WTC mosaic using points from RANSAC</p>
+
+        <div class = "image-comparison-2x2">
+            <div class = "single-image-container">
+                <h4>WTC Mosaic (manual)</h4>
+                <img src="code/output/wtc_manual_mosaic.png" alt="WTC Mosaic (manual)">
+                <p>WTC mosaic using manually-chosen points</p>
+            </div>
+            <div class = "single-image-container">
+                <h4>WTC Mosaic (with RANSAC)</h4>
+                <img src="code/output/wtc_mosaic_ransac.png" alt="WTC Mosaic (with RANSAC)">
+                <p>WTC mosaic using points from RANSAC</p>
+            </div>
         </div>
     </div>
 
