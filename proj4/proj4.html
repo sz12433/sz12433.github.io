@@ -591,7 +591,33 @@
         
 
         <h3>PSNR Training Curve</h3>
-        
+
+        <h2>Part 2: Fit a Neural Radiance Field from Multi-view Images</h2>
+        <h3>Part 2.1: Create Rays from Cameras</h3>
+        <div class="explanation">
+            <p>
+                To create rays from camera images, I first implemented 3 helper functions that were described in the spec to handle
+                camera to world coordinate conversion, pixel to camera coordinate conversion, and pixel to ray conversion.
+            </p>
+            <p>
+                First, I created a <code>transform(c2w, x_c)</code> function to convert 3D points from camera coordinates to world coordinates 
+                using the camera-to-world transformation matrix. This process involved adding a homogeneous coordinate to the points,
+                multiplying by the c2w matrix, and then de-homogenizing the result by dividing by the homogeneous coordinate.
+            </p>
+            <p>
+                Next, to implement <code>pixel_to_camera(K, uv, s)</code>, I inverted the pinhole camera projection equations to convert 2D
+                pixel coordinates back to 3D camera coordinates.
+                This function basically extracts the intrinsic parameters from the camera matrix, and then applies the inverse projection 
+                formulas to find camera coordinates.
+            </p>
+            <p>
+                Then, to convert a pixel coordinate to a ray with origin and normalized direction, I defined the <code>pixel_to_ray(K, c2w, uv)</code> function
+                to combine the previous two functions. This function computes the ray origin from the camera position in world coordinates,
+                (using c2w), then uses <code>pixel_to_camera</code> to get a 3D point in camera space, transforms it to world coordinates
+                using the <code>transform</code> helper function, and then calculates the normalized ray direction.
+            </p>
+        </div>
+
 
 
         <!-- Modal for image enlargement -->
