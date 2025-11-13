@@ -618,6 +618,40 @@
             </p>
         </div>
 
+        <h3>Part 2.2: Sampling</h3>
+        <div class="explanation">
+            <p>
+                When it comes to sampling, I first implemented a <code>sample_rays</code> function that followed the spec's second strategy
+                of flattening the pixels across all images and then doing a global random sample one time for ray sampling.
+            </p>
+            <p>
+                Then, to sample points along each ray, I created a <code>sample_along_rays</code> function that would essentially randomly
+                sample from a uniform distribution between the near and far bounds for each ray. Within the bins, I also followed the spec's
+                formula of adding a random fraction of the bin's width to avoid training the model on a fixed set of points, and ensure that
+                every location along the ray may be sampled.
+            </p>
+        </div>
+
+        <h3>Part 2.3: Putting the Dataloading All Together</h3>
+        <div class="explanation">
+            <p>
+                In this next part, I first implemented a new <code>RaysData</code> class to then use the provided visualization code to
+                verify cameras and rays to check if everything looks reasonable. After randomly sampling rays from images, RaysData then
+                uses the <code>pixel_to_ray</code> function to convert pixel coordinates to rays, and stores the ray origins, directions,
+                and corresponding RGB colors for training.
+            </p>
+            <p>
+                After that, I used the provided visualization code to visualize the camera positions and
+                ray directions in Visers. I believe the cameras are represented as frustums in 3D space, and the rays are shown as 
+                lines originating from the camera centers. This visualization helped confirm that the rays were correctly generated 
+                from the camera parameters and that they were pointing in the right directions. (Image is shown below!)
+            </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Viser Cloud of Cameras (Angle 1)</h4>
+            <img src="code/part0-images/viser_ss1.png" alt="Viser Cloud of Cameras (Angle 1)">
+            <p>The cloud of cameras in Viser from a more horizontal (side) angle</p>
+        </div>
 
 
         <!-- Modal for image enlargement -->
