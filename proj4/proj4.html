@@ -460,12 +460,35 @@
             <img src="code/part0-images/viser_ss2.png" alt="Viser Cloud of Cameras (Angle 2)">
             <p>The cloud of cameras in Viser from a more vertical (top-down) angle</p>
         </div>
+        <div class = "single-image-container">
+            <h4>Octo the Plushie</h4>
+            <img src="code/octo-images-2/IMG_5180 2 Medium.jpeg" alt="Octo the Plushie"
+                 style="max-width:240px; width:100%; height:auto; display:inline-block; border-radius:8px;">
+            <p>A reference photo from my dataset</p>
+        </div>
 
         <div class="explanation">
             <p>
                 These cameras are calibrated using images of my octopus plushie (Octo) taken from different angles. Octo is a plushie
                 that can turn inside out to reveal a different color (purple on one side, gray on the other) 🐙
             </p>
+            <p>
+                Note: I actually ended up taking another set of photos after my first calibration, because when I reached part 2.6 and
+                was training on my own data, I realized that my model might benefit from more images with a more diverse set of angles,
+                because I hadn't taken enough photos from behind the plushie to capture the back area. In addition, I also reran part 0
+                but without undistorting my images, because I realized from advice from OH that the undistortion counterintuitively
+                can also cause distortion to the image.
+            </p>
+            <p>
+                Below is an example of when I was undistorting my images! The lines aren't straight and this also leads to some blank,
+                black space in the image. Thus, I reran with no undistortion to achieve better results.
+            </p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Octo the Plushie</h4>
+            <img src="code/octo-images-2/undistort_but_distorted_octo.png" alt="Octo the Plushie"
+                 style="max-width:240px; width:100%; height:auto; display:inline-block; border-radius:8px;">
+            <p>An example image from applying undistortion</p>
         </div>
 
 
@@ -477,8 +500,8 @@
             </p>
             <ul style="margin-left: 20px; margin-bottom: 5px;">
                 <li>Hidden Layers: 3 hidden linear layers</li>
-                <li>Width: 256, tested with 32 and 256</li>
-                <li>Positional Encoding: 2D positional encoding with max frequency L (tested with L=4 and L=10)</li>
+                <li>Width: 256, but tried both 32 and 256</li>
+                <li>Positional Encoding: 2D positional encoding with max frequency L (tried L=4 and L=10)</li>
                 <li>Input Dimension: 2 + 4*L (after positional encoding)</li>
                 <li>Output: 3 channels (RGB) with Sigmoid activation to output values in [0,1]</li>
                 <li>Activation: ReLU for hidden layers, Sigmoid for output</li>
@@ -494,8 +517,8 @@
                 <li>Loss Function: MSE (Mean Squared Error)</li>
                 <li>Evaluation Metric: PSNR (Peak Signal-to-Noise Ratio)</li>
             </ul>
-            <p style="margin-top: 16px;">
-                The model uses positional encoding to map 2D pixel coordinates (x, y) to a higher-dimensional feature space
+            <p style="margin-top: 20px;">
+                Essentially, the model uses positional encoding to map 2D pixel coordinates (x, y) to a higher-dimensional feature space
                 with sinusoidal functions at different frequencies (2^0, 2^1, ..., 2^(L-1)). From there, the positional encoding 
                 produces features of dimension 2 + 4*L, which are then passed through the 3-layer MLP with ReLU activations for predicting 
                 RGB color values.
@@ -506,38 +529,39 @@
         <div class="explanation">
             <p>
                 Training progression on the provided test image (fox) showing reconstructions at different iterations.
-                The model gradually learns to reconstruct the image, with quality improving over training iterations.
+                It appears that the model gradually learns to reconstruct the image, and the quality improves 
+                rapidly (particularly from iteration 1 to 200) over the training iterations.
             </p>
         </div>
         <div class="image-comparison">
             <div class="image-container">
                 <h5>Iteration 1</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0001.png" alt="Fox reconstruction at iteration 1">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter0001.png" alt="Fox reconstruction at iteration 1">
                 <p>Initial reconstruction (iteration 1)</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 200</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0200.png" alt="Fox reconstruction at iteration 200">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter0200.png" alt="Fox reconstruction at iteration 200">
                 <p>After 200 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 400</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0400.png" alt="Fox reconstruction at iteration 400">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter0400.png" alt="Fox reconstruction at iteration 400">
                 <p>After 400 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 600</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0600.png" alt="Fox reconstruction at iteration 600">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter0600.png" alt="Fox reconstruction at iteration 600">
                 <p>After 600 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 1000</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter1000.png" alt="Fox reconstruction at iteration 1000">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter1000.png" alt="Fox reconstruction at iteration 1000">
                 <p>After 1000 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 2000 (Final)</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter2000.png" alt="Fox reconstruction at iteration 2000">
+                <img src="code/part1-results-fox/recon_pe10_w256_iter2000.png" alt="Fox reconstruction at iteration 2000">
                 <p>Final reconstruction (2000 iterations)</p>
             </div>
         </div>
@@ -553,44 +577,55 @@
         <div class="image-comparison">
             <div class="image-container">
                 <h5>Iteration 1</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0001.png" alt="Home cafe reconstruction at iteration 1">
+                <img src="code/part1-results-home/recon_pe10_w256_iter0001.png" alt="Home cafe reconstruction at iteration 1">
                 <p>Initial reconstruction (iteration 1)</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 200</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0200.png" alt="Home cafe reconstruction at iteration 200">
+                <img src="code/part1-results-home/recon_pe10_w256_iter0200.png" alt="Home cafe reconstruction at iteration 200">
                 <p>After 200 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 400</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0400.png" alt="Home cafe reconstruction at iteration 400">
+                <img src="code/part1-results-home/recon_pe10_w256_iter0400.png" alt="Home cafe reconstruction at iteration 400">
                 <p>After 400 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 600</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter0600.png" alt="Home cafe reconstruction at iteration 600">
+                <img src="code/part1-results-home/recon_pe10_w256_iter0600.png" alt="Home cafe reconstruction at iteration 600">
                 <p>After 600 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 1000</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter1000.png" alt="Home cafe reconstruction at iteration 1000">
+                <img src="code/part1-results-home/recon_pe10_w256_iter1000.png" alt="Home cafe reconstruction at iteration 1000">
                 <p>After 1000 iterations</p>
             </div>
             <div class="image-container">
                 <h5>Iteration 2000 (Final)</h5>
-                <img src="code/part1-results/recon_pe10_w256_iter2000.png" alt="Home cafe reconstruction at iteration 2000">
+                <img src="code/part1-results-home/recon_pe10_w256_iter2000.png" alt="Home cafe reconstruction at iteration 2000">
                 <p>Final reconstruction (2000 iterations)</p>
             </div>
         </div>
 
-        <h3>Hyperparameter Experimentation</h3>
-        <div class="explanation">
-            <p>
-            </p>
+        <h3>PE and Width Experimentation</h3>
+        <div class = "single-image-container">
+            <h4>Fox Results</h4>
+            <img src="code/part1-results-fox/final_reconstructions_grid.png" alt="Fox Results">
+            <p>2x2 grid of different hyperparameters</p>
+        </div>
+        <div class = "single-image-container">
+            <h4>Home Cafe Results</h4>
+            <img src="code/part1-results-home/final_reconstructions_grid.png" alt="Home Cafe Results">
+            <p>2x2 grid of different hyperparameters</p>
         </div>
         
 
         <h3>PSNR Training Curve</h3>
+        <div class = "single-image-container">
+            <h4>Home Cafe PSNR Training Curve</h4>
+            <img src="code/part1-results-home/psnr_curve.png" alt="Home Cafe PSNR Training Curve">
+            <p>Training curve of the PSNR over iterations</p>
+        </div>
 
         <h2>Part 2: Fit a Neural Radiance Field from Multi-view Images</h2>
         <h3>Part 2.1: Create Rays from Cameras</h3>
@@ -647,10 +682,259 @@
                 from the camera parameters and that they were pointing in the right directions. (Image is shown below!)
             </p>
         </div>
-        <div class = "single-image-container">
-            <h4>Viser Cloud of Cameras (Angle 1)</h4>
-            <img src="code/part0-images/viser_ss1.png" alt="Viser Cloud of Cameras (Angle 1)">
-            <p>The cloud of cameras in Viser from a more horizontal (side) angle</p>
+        <div class = "image-comparison-2x2">
+            <div class="image-container">
+                <h4>Lego Viser Image</h4>
+                <img src="code/part2.3-results/lego_rays.png" alt="Lego Viser Image">
+                <p>Visualization of cameras, rays, and samples in 3D for Lego dataset</p>
+            </div>
+            <div class="image-container">
+                <h4>Lego One Camera</h4>
+                <img src="code/part2.3-results/lego_one_camera.png" alt="Lego One Camera">
+                <p>Visualization of rays sampled only from one camera, rays are within the camera frustrum
+                    (I plotted up to 100 rays as suggested by the spec for decreased crowdedness)
+                </p>
+            </div>
+        </div>
+
+        <h3>Part 2.4: Neural Radiance Field</h3>
+        <div class="explanation">
+            <p>
+                To prepare for working in 3D space, I updated my <code>PositionalEncoder</code> class to a new 3D version that could
+                handle 3D coordinates instead of 2D. This involved modifying the original implementation to take 3D input points and 
+                apply sinusoidal functions across all three dimensions (x, y, z), and then concatenating the original coordinates with the encoded features.
+            </p>
+            <p>
+                Next, I created a new <code>NeRF</code> class to build the deep MLP as described in the spec. Based on the provided diagram,
+                the NeRF consists of 8 layers for the MLP, with ReLU activations at each hidden layer. There's also a linear layer injected
+                after the 4th layer that receives features from the previous layer as well as the original position vector. After a final
+                color layer, a Sigmoid activation is applied to ensure the RGB outputs are in the range [0, 1].
+            </p>
+        </div>
+
+        <h3>Part 2.5: Volume Rendering</h3>
+        <div class="explanation">
+            <p>
+                First, I implemented the volume rendering equation for a batch of samples along a ray in the <code>vol_rend</code> function.
+                The <code>vol_rend</code> function first calculated transmittance from subtracting an alpha value from 1, which was also
+                computed by taking the product of the densities and distances between samples (sigma and delta), by following the formula
+                provided in the spec. From there, we can build a list of weights for each sample along the ray by multiplying the transmittance
+                with the alpha values, and then use <code>torch.cumprod</code> to compute the cumulative product needed for transmittance.
+                I then checked the functionality by running the provided assert statement!
+            </p>
+            <p>
+                To train the NeRF model on the lego dataset, I combined the 3 helper functions from part 2.1 along with the dataloader
+                <code>RaysData</code> from 2.3 to sample rays and points along those rays. For each batch of rays, I used the NeRF model to predict colors and densities
+                at the sampled points, and then applied the volume rendering function from 2.5 to compute the final pixel colors.
+                The loss was calculated as the MSE between the rendered colors and the ground truth pixel colors.
+            </p>
+            <p>
+                In terms of my model architecture, see the below lists with details!
+            </p>
+            <p>
+                <strong>Architecture Details:</strong>
+            </p>
+            <ul style="margin-left: 20px; margin-bottom: 5px;">
+                <li>Depth: 8 connected layers</li>
+                <li>Width: 256</li>
+                <li>Positional Encoding: uses L = 10 frequencies for x, y, and z</li>
+                <li>Input Dimension: position encoding = 63, direction encoding = 27</li>
+                <li>Output: density, color (RGB)</li>
+                <li>Activation: ReLU for hidden layers and for density, Sigmoid for RGB</li>
+            </ul>
+            <p>
+                <strong>Training Hyperparameters:</strong>
+            </p>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li>Learning Rate: 5e-4 (0.0005)</li>
+                <li>Optimizer: Adam</li>
+                <li>Batch Size: 4096 rays sper step</li>
+                <li>Number of Iterations: 1500</li>
+                <li>Number of Samples: 64 (per ray)</li>
+                <li>Near: 2.0</li>
+                <li>Far: 6.0</li>
+                <li>Loss Function: MSE (Mean Squared Error)</li>
+                <li>Evaluation Metric: PSNR (Peak Signal-to-Noise Ratio)</li>
+            </ul>
+            <p style="margin-top: 20px">
+                To elaborate on the training parameters in particular, I changed some of my hyperparameters to be different than those
+                listed in the spec to try and save some computation time. For example, instead of 10,000 rays per gradient step, I used
+                4,096, and instead of 1000 gradient steps, I iterated over 1500. However, since I added a conditional statement that would
+                <code>break</code> out of the training loop if we hit 23 validation psnr, my training actually termminated in 1250 iterations
+                out of the original 1500. The main reason I decreased the batch size by more than half is because I actually had implemented
+                everything at this point in my local VSCode environment on a M1 mac mps backend. However, this took a long time for me to run,
+                especially when I was taking 10,000 rays per gradient step, so I switched to 4096. Even then, it would still take around 40 minutes
+                to finish training and reach a 23 validation, which made some of my experimentation difficult. As a result, after receiving advice
+                from OH, I transferred my code to Colab to use the T4 GPU for part 2.6!
+            </p>
+        </div>
+        <h4>Lego Training Iterations</h4>
+        <div class="explanation">
+            <p>
+                Training progression on the lego dataset showing predicted images across different iterations of the 
+                training process.
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h5>Iteration 0</h5>
+                <img src="code/lego_progression/iter_00000.png" alt="Lego reconstruction at iteration 0">
+                <p>Initial reconstruction (iteration 0)</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 250</h5>
+                <img src="code/lego_progression_more_iters/iter_00250.png" alt="Lego reconstruction at iteration 250">
+                <p>After 250 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 500</h5>
+                <img src="code/lego_progression_more_iters/iter_00500.png" alt="Lego reconstruction at iteration 500">
+                <p>After 500 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 750</h5>
+                <img src="code/lego_progression_more_iters/iter_00750.png" alt="Lego reconstruction at iteration 750">
+                <p>After 750 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 1000</h5>
+                <img src="code/lego_progression_more_iters/iter_01000.png" alt="Lego reconstruction at iteration 1000">
+                <p>After 1000 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 1250</h5>
+                <img src="code/lego_progression_more_iters/iter_01250.png" alt="Lego reconstruction at iteration 1250">
+                <p>After 1250 iterations</p>
+            </div>
+        </div>
+        <div class="single-image-container">
+            <h4>Training and Validation PSNR Curves</h4>
+            <img src="code/lego_progression_more_iters/lego_psnr_curves.png" alt="Training and Validation PSNR Curves">
+            <p>PSNR curve for both training and validation</p>
+        </div>
+        <div class="single-image-container">
+            <h4>Lego Video Novel View</h4>
+            <img src="code/lego_360.gif" alt="Lego Video Novel View">
+            <p>Video showing a spherical rendering of the lego using the provided test cameras extrinsics</p>
+        </div>
+
+
+        <h3>Part 2.6: Training with Your Own Data</h3>
+        <div class="explanation">
+            <p>
+                <strong>Architecture Details:</strong>
+            </p>
+            <ul style="margin-left: 20px; margin-bottom: 5px;">
+                <li>Depth: 8 connected layers</li>
+                <li>Width: 256</li>
+                <li>Positional Encoding: uses L = 8 frequencies for x, y, and z</li>
+                <li>Input Dimension: position encoding = 63, direction encoding = 27</li>
+                <li>Output: density, color (RGB)</li>
+                <li>Activation: ReLU for hidden layers and for density, Sigmoid for RGB</li>
+            </ul>
+            <p>
+                <strong>Training Hyperparameters:</strong>
+            </p>
+            <ul style="margin-left: 20px; margin-top: 5px;">
+                <li>Learning Rate: 5e-4 (0.0005)</li>
+                <li>Optimizer: Adam</li>
+                <li>Batch Size: 10000 rays sper step</li>
+                <li>Number of Iterations: 2000</li>
+                <li>Number of Samples: 64 (per ray)</li>
+                <li>Near: 0.01</li>
+                <li>Far: 0.8</li>
+                <li>Loss Function: MSE (Mean Squared Error)</li>
+                <li>Evaluation Metric: PSNR (Peak Signal-to-Noise Ratio)</li>
+            </ul>
+            <p style="margin-top: 20px">
+                Moving from my VSCode to the Colab notebook environment, I now increased my batch size back up to 10,000 rays to try
+                and capture more information per gradient step now that I could run on a stronger GPU that could compute faster than
+                before. Additionally, although I kept the same learning rate as for the lego
+                data, I actually added in a decay for the learning rate using the <code>CosineAnnealingLR</code> so that the learning
+                rate would gradually decrease over time by following the curve of a cosine function. I added this because I noticed
+                that although my training PSNR would rapidly increase, my validation PSNR would actually start to decrease, which
+                seemed to indicate to me that my model was beginning to overfitt. As a result, this learning rate decay helped my validation
+                PSNR from dropping as rapidly, and seemed to be more stabilized than before. 
+            </p>
+            <p>
+                I also decreased my L positional encoding parameter from 10 to 8, because I found that with 10 frequencies, my model seemed to
+                overfit more quickly to the training data, leading to artifacts in the rendered images. Regarding other hyperparameters,
+                after some experimentation and also some physical measurement of where I took my photo (I did look funny trying to measure
+                the distance from my camera to my original Octo plushie) I adjusted my near and far bounds to = 0.01 and 0.8 respectively
+                based on the idea that these distances may somewhat represent the meters from the camera. 
+            </p>
+            <p>
+                To briefly comment on my generated gif, I actually went through a lot of trial and error because I think I did some rotations
+                incorrectly initially (see below for some silly attempts --  not sure why some of my orbits rotated the camera through the 
+                table??) before I finally got a clean orbit around my octo plushie. Interestingly, some of the novel views appeared to have
+                some beige/yellow artifacts that I think may be a result of the wall behind my desk. At these points behind my object, it seems
+                like the aruco tags would almost disappear and it became much harder to distinguish the object and the tag. However, it was
+                really cool to see what views the model could come up with to simulate the camera rotation around my plushie, especially since
+                they cana be believable to even the human eye!
+            </p>
+        </div>
+        <h4>Octo Training Iterations</h4>
+        <div class="explanation">
+            <p>
+                Training progression on my octo dataset showing intermediate renders across different, selected iterations of the 
+                training process. I noticed more improvement in the beginning iterations (up until 1250), and then the progress
+                in rendering quality seemed to slow.
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <h5>Iteration 250</h5>
+                <img src="code/colab-octo2-progression/iter_00250.png" alt="Lego reconstruction at iteration 250">
+                <p>Initial reconstruction (iteration 250)</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 500</h5>
+                <img src="code/colab-octo2-progression/iter_00500.png" alt="Lego reconstruction at iteration 500">
+                <p>After 500 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 750</h5>
+                <img src="code/colab-octo2-progression/iter_00750.png" alt="Lego reconstruction at iteration 750">
+                <p>After 750 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 1000</h5>
+                <img src="code/colab-octo2-progression/iter_01000.png" alt="Lego reconstruction at iteration 1000">
+                <p>After 1000 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 1250</h5>
+                <img src="code/colab-octo2-progression/iter_01250.png" alt="Lego reconstruction at iteration 1250">
+                <p>After 1250 iterations</p>
+            </div>
+            <div class="image-container">
+                <h5>Iteration 2000</h5>
+                <img src="code/colab-octo2-progression/iter_02000.png" alt="Lego reconstruction at iteration 2000">
+                <p>After 2000 iterations</p>
+            </div>
+        </div>
+        <div class="single-image-container">
+            <h4>Training and Validation PSNR Curves</h4>
+            <img src="code/colab-octo2-progression/octo_psnr_curves.png" alt="Training and Validation PSNR Curves">
+            <p>PSNR curve for both training and validation</p>
+        </div>
+        <div class="image-comparison-2x2">
+            <div class="image-container">
+                <h4>Octo Video Attempt 1</h4>
+                <img src="code/octo-gifs/octo_360_orbit.gif" alt="Octo Video Attempt 1">
+                <p>First video visualization attempt using images that weren't as well-rendered (prior to adding LR decay)</p>
+            </div>
+            <div class="image-container">
+                <h4>Octo Video Attempt 2</h4>
+                <img src="code/octo-gifs/octo_360_horizontal.gif" alt="Octo Video Attempt 2">
+                <p>Second video visualization attempt which seemed to have better quality renders, but I think I rotated the wrong way
+                </p>
+            </div>
+        </div>
+        <div class="single-image-container">
+            <h4>Octo Video Novel View</h4>
+            <img src="code/octo-gifs/octo_360_3.gif" alt="Octo Video Novel View">
+            <p>Video showing a camera circling my Octo plushie with novel views</p>
         </div>
 
 
