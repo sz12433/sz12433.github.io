@@ -992,6 +992,239 @@
         </div>
 
 
+        <h2>Part B: Flow Matching from Scratch!</h2>
+        <h4>Part 1: Training a Single-Step Denoising UNet</h4>
+
+        <h3>1.1 Implementing the UNet</h3>
+        <div class="explanation">
+            <p>
+                To implement our UNet, we first implement some individual operations like the Conv, DownConv, and UpConv operations
+                to perform convolution, downsampling, and upsampling respectively. We also reshape the dimensions of our feature maps
+                by using Flatten to convert 7x7 to 1x1, and vice versa Unflatten to convert 1x1 back up to 7x7. Then we combine these 
+                operations into blocks through ConvBlock, DownBlock, and UpBlock classes to create the building blocks for following 
+                our diagram of the UNet model.
+            </p>
+            <p>
+                Next, we implement our UnconditionalUNet by first passing our image through the convolutional layer, then continue
+                downsampling the dimensions through 2 DownBlock calls. From here, we have dimensions at 7x7, so we use our flatten
+                operation to convert to 1x1 dimensions. Then, we Unflatten this back to 7x7 and follow the upsampling path by 
+                making 2 UpBlock calls. Finally, we pass this through a final convolutional layer to get our output image. In the forward
+                method, we also concatenate corresponding encoder and decoder layers and then propagate upward following figure 1 from the spec.
+            </p>
+        </div>
+
+        <h3>1.2 Using the UNet to Train a Denoiser</h3>
+        <div class="explanation">
+            <p>
+                Before training the UNet to remove noise, we first visualize the effect of adding varying levels of Gaussian noise to the original dataset images. We load our MNIST dataset and then define our list of noise levels to add to the images:
+                [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0]. As we can see in our grid visual, higher sigma values lead to more noise in
+                the images, making them progressively harder to distinguish digits.
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/1.2noise.png" alt="MNIST images with varying levels of Gaussian noise">
+            <p>MNIST images with varying levels of Gaussian noise</p>
+        </div>
+
+        <h3>1.2.1 Training</h3>
+        <div class="explanation">
+            <p>
+                To train our model to perform denoising, I used the follow parameters recommended by the spec:
+                <ul>batch_size = 256</ul>
+                <ul>learning_rate = 1e-4</ul>
+                <ul>noise_level = 0.5</ul>
+                <ul>hidden_dim = 128</ul>
+                <ul style="margin-bottom: 20px">num_epochs = 5</ul>
+
+                Next, we can load our training and testing datasets, making sure to shuffle before calling <code>DataLoader</code>.
+                Using Adam optimizer and MSELoss, we can then train our UNet model to minimize the loss between the predicted denoised image
+                and the original clean image. After training for 5 epochs, we can see that the training loss decreases steadily, indicating that our model is learning to denoise the images effectively. I think the most distinctive difference
+                epochs 1 and 5 to my eye is that epoch 5 has clearer digits, whereas epoch 1's digits are slightly thick and appear kind of blurred.
+            </p>
+        </div>
+        <div class="image-comparison">
+            <div class="image-container">
+                <img src="code/images/1.2.1epoch1.png" alt="Denoising after Epoch 1">
+                <p>Denoising after Epoch 1</p>
+            </div>
+            <div class="image-container">
+                <img src="code/images/1.2.1epoch5.png" alt="Denoising after Epoch 5">
+                <p>Denoising after Epoch 5</p>
+            </div>
+            <div class="image-container">
+                <img src="code/images/1.2.1loss.png" alt="Training Loss Curve">
+                <p>Training Loss Curve</p>
+            </div>
+        </div>
+
+        <h3>1.2.2 Out-of-Distribution Testing</h3>
+        <div class="explanation">
+            <p>
+                Next, to test how the denoiser performs on different sigma values that it wasn't trained for, I took an image
+                from the test to add noise with sigma values of [0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0] and then passed these noisy images
+                through our trained UNet denoiser. Based on the results, it seems like the denoiser can perform reasonably well up to
+                noise levels of around 0.6, where the denoised image still clearly shows the correct digit. However, at a noise level
+                of around 0.8 and 1.0 is when the output becomes less clear.
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/1.2.2noises.png" alt="Out-of-Distribution Denoising Results">
+            <p>Out-of-Distribution Denoising Results</p>
+        </div>
+
+
+        <h3>1.2.3 Denoising Pure Noise</h3>
+        <div class="explanation">
+            <p>
+                Here, to train and sample on an input image of pure noise, I first used the <code>torch.randn_like</code> function
+                again to create a random noise image with the same dimensions as our MNIST images. Then, I passed this noise image
+                through our trained UNet denoiser to see what outputs it would produce again over 5 epochs. From there, I sampled
+                6 images to compare the input and output images. Interestingly, I notice a pattern where the output images from the
+                inputs of pure noise all tend to resemble the digit 3 or 8, as a blurry combination of both. This may make sense intuitively when we consider our training image dataset contains digits from 0-9. As the spec points out, since we
+                are using MSE as our loss metric and the model learns to predict the point that minimizes the sum of squared distances to all training examples, then in the context of our MNIST training data, the model may tend to converge towards the most average representation of this data, which may involve loops similar to features from digits 3 and 8.
+            </p>
+        </div>
+         <div class="image-comparison-2x2">
+            <div class="image-container">
+                <img src="code/images/1.2.3epoch1.png" alt="Denoising Pure Noise (Epoch 1)">
+                <p>Denoising Pure Noise (Epoch 1)</p>
+            </div>
+            <div class="image-container">
+                <img src="code/images/1.2.3epoch5.png" alt="Denoising Pure Noise (Epoch 5)">
+                <p>Denoising Pure Noise (Epoch 5)</p>
+            </div>
+        </div>
+
+
+
+
+        <h4>Part 2: Training a Flow Matching Model</h4>
+
+        <h3>2.1 Adding Time Conditioning to UNet</h3>
+        <div class="explanation">
+            <p>
+                To add time conditioning to our UNet, I add an FCBlock class to serve as an operator to transform a time value t into a higher-dimensional embedding vector. While some of our original UNet structure like ConvBlocks, DownBlocks, and UpBlocks remain the same, we can now inject a scalar t to effectively condition our model. In our <code>TimeConditionalUNet</code> class, we can modulate our unflatten operation by multiplying with our time embedding after passing t through our FCBlock. This way, the time information is incorporated into the feature maps as we reshape them back to 7x7 dimensions. The rest of the UNet structure follows similarly to before, with downsampling and upsampling paths using DownBlocks and UpBlocks respectively, and concatenating corresponding encoder and decoder layers.
+            </p>
+            <p>
+                In our <code>time_fm_forward</code> process, we follow steps of sampling a timestep t, generating the intermediate point by following the linear interpolation formula B.3:
+                $$
+                \begin{equation}
+                x_t = (1-t)x_0 + tx_1 \quad \text{where } x_0 \sim \mathcal{N}(0, 1), t \in [0, 1]. \tag{B.3}
+                \end{equation}
+                $$
+                Next, we subtract image x_0 from x_1 to calculate our true flow:
+                $$
+                \begin{equation} u(x_t, t) = \frac{d}{dt} x_t = x_1 - x_0. \tag{B.4}\end{equation}
+                $$
+                and then predict the flow using our time-conditioned UNet. From there, we compute the MSE loss between the true flow and predicted flow (true flow - predicted flow) to train our model:
+                $$
+                \begin{equation}
+                    L = \mathbb{E}_{x_0 \sim p_0(x_0), x_1 \sim p_1(x_1), t \sim U[0, 1]} \|(x_1-x_0) - u_\theta(x_t, t)\|^2. \tag{B.5}
+                \end{equation}
+                $$
+            </p>
+        </div>
+
+
+        <h3>2.2 Training the UNet</h3>
+        <div class="explanation">
+            <p>
+                Now that we have our time-conditioned model, we can follow Algorithm 1 to randomly pick and image from our training dataset, randomly choose a timestep t, add noise, and then run our denoiser to predict the flow at the noised image x_t.
+                I used these parameters for training:
+                <ul>batch_size = 64</ul>
+                <ul>learning_rate = 1e-2 (now with a scheduler + learning rate decay)</ul>
+                <ul>hidden_dim = 64</ul>
+                <ul>num_epochs = 5</ul>
+                <ul style="margin-bottom: 20px;">num_ts = 50</ul>
+                Below is the training loss curve plot for the time-conditioned UNet over the whole training process.
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.2loss.png" alt="Training Loss Curve for Time-Conditioned UNet">
+            <p>Training Loss Curve for Time-Conditioned UNet</p>
+        </div>
+
+        <h3>2.3 Sampling from the UNet</h3>
+        <div class="explanation">
+            <p>
+                To sample from our trained time-conditioned UNet, we can follow Algorithm 2 from the spec. First, we start
+                with a random noise image x_1 sampled from a standard normal distribution. Then, we iterate from t = 0 to t = 1
+                in steps of size 1/T = 1/num_ts in my implementation, which is currently set to 50 timesteps. Finally, we update the current state by stepping in the direction of the predicted flow from our UNet scaled by the step size. Below are the results from sampling at epochs 1, 5, and 10, with a total of 40 images shown at each epoch. Just to comment on the result quality from each epoch, I think the digit 0 can be seen to become progressively more well defined and more clear over the course of iterating from epoch 1 to epoch 10. For example, in the first row in digit outputs in epoch 1's image, there are some numbers that appear very incomplete with just a couple disjointed strokes present. By epoch 10, I see fewer of disjoitned handwriting and more complete digits that are easier to identify. 
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.3epoch1.png" alt="Sampling Results from Time-Conditioned UNet (Epoch 1)">
+            <p>Sampling Results from Time-Conditioned UNet (Epoch 1)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.3epoch5.png" alt="Sampling Results from Time-Conditioned UNet (Epoch 5)">
+            <p>Sampling Results from Time-Conditioned UNet (Epoch 5)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.3epoch10.png" alt="Sampling Results from Time-Conditioned UNet (Epoch 10)">
+            <p>Sampling Results from Time-Conditioned UNet (Epoch 10)</p>
+        </div>
+
+        <h3>2.4 Adding Class-Conditioning to UNet</h3>
+        <div class="explanation">
+            <p>
+                Here, to improve our model results, we can also add class-conditioning on top of our time-conditioned UNet to create a model conditioned additionally on the digit class 0-9. To do this, we add 2 more FCBlocks to process this class condition vector, and we also modify how we inject these embeddings into our UNet. Specifically, we multiply the class embedding and then add our time embedding in the unflatten operation, and we also do after our UpBlock during the upsampling path. Following the spec's recommendation, we also one-hot encode our class labels to create a vector of size 10 for each digit class. In our <code>class_fm_forward</code> function, we also drop the class conditioning 10% of the time by setting this vector 0 instead to hopefully encourage the model to learn denoising without relying only on class information. 
+            </p>
+        </div>
+
+        <h3>2.5 Training the UNet</h3>
+        <div class="explanation">
+            <p>
+                To train our class-conditioned and time-conditioned UNet, we can follow the same training process as in 2.2 along with the same paramters, but now with the addtion of the 10 class labels. Below is the training loss curve plot for the class-conditioned UNet over the whole training process.
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.5loss.png" alt="Training Loss Curve for Class-Conditioned UNet">
+            <p>Training Loss Curve for Class-Conditioned UNet</p>
+        </div>
+
+        <h3>2.6 Sampling from the UNet</h3>
+        <div class="explanation">
+            <p>
+                Next, we can sample from our trained class-conditioned UNet by following the same sampling procedure. Here, I sampled images for each digit class from 0-9 to see how well the model can generate images corresponding to each class and over only 10 epochs. Below are the results from sampling at epochs 1, 5, and 10, with a total of 10 images shown at each epoch for each digit class. While the output samples from the 3 epochs look similar to me, which may suggest that the model converged quickly, I do think that by epoch 10, certain digits like the sampled digit number 7 look cleanest in the final epoch, where there's fewer stray pixels and the digit is more clearly defined.
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6epoch1.png" alt="Sampling Results from Class-Conditioned UNet (Epoch 1)">
+            <p>Sampling Results from Class-Conditioned UNet (Epoch 1)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6epoch5.png" alt="Sampling Results from Class-Conditioned UNet (Epoch 5)">
+            <p>Sampling Results from Class-Conditioned UNet (Epoch 5)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6epoch10.png" alt="Sampling Results from Class-Conditioned UNet (Epoch 10)">
+            <p>Sampling Results from Class-Conditioned UNet (Epoch 10)</p>
+        </div>
+
+        <div class="explanation">
+            <p>
+                To try this without the learning rate scheduler, I changed my learning rate parameter to 3e-3 because this value would be between the start and end learning rates of the scheduler before. As a result, I hope a smaller but fixed learning rate to compensate for lack of decay may help the model converge better. Below, I show the 3 sampling results at epoch 1, 5, and 10 so that we may compare against the UNet with the learning rate scheduler, and I also included a comparison of the training loss curves, where we can see the difference in model convergence. Overall, I think the results are actually fairly close between the two models with a learning rate scheduler and without!
+            </p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6nolr_epoch1.png" alt="No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 1)">
+            <p>No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 1)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6nolr_epoch5.png" alt="No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 5)">
+            <p>No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 5)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6nolr_epoch10.png" alt="No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 10)">
+            <p>No Learning Rate Scheduler Sampling Results from Class-Conditioned UNet (Epoch 10)</p>
+        </div>
+        <div class="single-image-container">
+            <img src="code/images/2.6loss.png" alt="Training Loss Curve for Class-Conditioned UNet without Learning Rate Scheduler">
+            <p>Training Loss Curve for Class-Conditioned UNet Comparison</p>
+        </div>
+
+
         <!-- Modal for image enlargement -->
     <div id="imageModal" class="modal">
         <span class="modal-close">&times;</span>
